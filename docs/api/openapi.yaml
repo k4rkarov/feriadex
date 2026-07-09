@@ -1,0 +1,363 @@
+openapi: 3.1.0
+info:
+  title: Feriadex API
+  version: 0.1.0
+  description: >
+    REST API for Feriadex — a multi-country vacation/holiday optimizer.
+    Country-centric and cache-friendly. This is a design draft; no endpoint is
+    implemented yet. Holiday data is sourced from government/public APIs via
+    per-country adapters (never proxied from folgaextra.com).
+servers:
+  - url: https://api.feriadex.com/v1
+    description: Production (planned)
+  - url: http://localhost:3000/api/v1
+    description: Local Next.js route handlers
+
+tags:
+  - name: Metadata
+    description: Supported countries, regions, cities, labor policies.
+  - name: Holidays
+    description: Holiday lookups by jurisdiction and date range.
+  - name: Optimize
+    description: Core vacation-optimization compute (stateless).
+  - name: Studies
+    description: Saved, shareable optimization runs.
+
+paths:
+  /countries:
+    get:
+      tags: [Metadata]
+      summary: List supported countries
+      responses:
+        "200":
+          description: Supported countries with locale + policy availability.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Country" }
+
+  /countries/{countryCode}/regions:
+    get:
+      tags: [Metadata]
+      summary: List first-level regions (e.g. Brazilian states)
+      parameters:
+        - $ref: "#/components/parameters/CountryCode"
+      responses:
+        "200":
+          description: Regions for the country.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Region" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /countries/{countryCode}/regions/{regionCode}/cities:
+    get:
+      tags: [Metadata]
+      summary: List cities within a region (for municipal holidays)
+      parameters:
+        - $ref: "#/components/parameters/CountryCode"
+        - $ref: "#/components/parameters/RegionCode"
+      responses:
+        "200":
+          description: Cities for the region.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/City" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /countries/{countryCode}/policies:
+    get:
+      tags: [Metadata]
+      summary: List labor policies and preset split schemes for a country
+      description: >
+        Returns the jurisdiction's legal ruleset plus common employer presets
+        (e.g. Brazil CLT Art. 134 and typical RH parceling schemes).
+      parameters:
+        - $ref: "#/components/parameters/CountryCode"
+      responses:
+        "200":
+          description: Labor policies available for the country.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/LaborPolicy" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /holidays:
+    get:
+      tags: [Holidays]
+      summary: List holidays for a jurisdiction and date range
+      parameters:
+        - { name: country, in: query, required: true, schema: { type: string }, example: BR }
+        - { name: region, in: query, required: false, schema: { type: string }, example: PE }
+        - { name: city, in: query, required: false, schema: { type: string }, example: RECIFE }
+        - { name: from, in: query, required: true, schema: { type: string, format: date }, example: "2026-01-01" }
+        - { name: to, in: query, required: true, schema: { type: string, format: date }, example: "2026-12-31" }
+      responses:
+        "200":
+          description: Holidays overlapping the range, most-relevant first.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Holiday" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+
+  /optimize:
+    post:
+      tags: [Optimize]
+      summary: Compute ranked vacation windows (stateless)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/OptimizeInput" }
+      responses:
+        "200":
+          description: Ranked optimization result.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/OptimizeResult" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "422":
+          description: Split scheme invalid under the selected labor policy.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /studies:
+    post:
+      tags: [Studies]
+      summary: Save a study (inputs + optional cached result)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/StudyInput" }
+      responses:
+        "201":
+          description: Created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Study" }
+
+  /studies/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: string } }
+    get:
+      tags: [Studies]
+      summary: Load a study
+      responses:
+        "200":
+          description: The study.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Study" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    put:
+      tags: [Studies]
+      summary: Update a study
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/StudyInput" }
+      responses:
+        "200":
+          description: Updated.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Study" }
+        "404": { $ref: "#/components/responses/NotFound" }
+    delete:
+      tags: [Studies]
+      summary: Delete a study
+      responses:
+        "204": { description: Deleted. }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+components:
+  parameters:
+    CountryCode:
+      name: countryCode
+      in: path
+      required: true
+      schema: { type: string, example: BR }
+      description: ISO 3166-1 alpha-2 country code.
+    RegionCode:
+      name: regionCode
+      in: path
+      required: true
+      schema: { type: string, example: PE }
+      description: First-level subdivision code (ISO 3166-2 suffix).
+
+  responses:
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    BadRequest:
+      description: Invalid request parameters.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+
+  schemas:
+    Country:
+      type: object
+      required: [code, name]
+      properties:
+        code: { type: string, example: BR }
+        name: { type: string, example: Brazil }
+        defaultLocale: { type: string, example: pt-BR }
+        weekStart: { type: integer, minimum: 0, maximum: 6, description: "0=Sunday", example: 0 }
+        hasRegionalHolidays: { type: boolean }
+        hasMunicipalHolidays: { type: boolean }
+        policyCount: { type: integer }
+
+    Region:
+      type: object
+      required: [code, name]
+      properties:
+        code: { type: string, example: PE }
+        name: { type: string, example: Pernambuco }
+
+    City:
+      type: object
+      required: [code, name]
+      properties:
+        code: { type: string, example: RECIFE }
+        name: { type: string, example: Recife }
+        regionCode: { type: string, example: PE }
+
+    Holiday:
+      type: object
+      required: [date, name, level]
+      properties:
+        date: { type: string, format: date, example: "2026-03-06" }
+        name: { type: string, example: "Revolução Pernambucana" }
+        level:
+          type: string
+          enum: [national, regional, municipal]
+          example: regional
+        movable: { type: boolean, description: "Computed movable feast (Easter-based)" }
+
+    SplitScheme:
+      type: object
+      description: An order-independent partition of the entitlement into blocks.
+      required: [totalDays, parts]
+      properties:
+        id: { type: string, example: "br-30-14-11-5" }
+        label: { type: string, example: "14 + 11 + 5" }
+        totalDays: { type: integer, example: 30 }
+        parts:
+          type: array
+          items: { type: integer }
+          example: [14, 11, 5]
+        source:
+          type: string
+          enum: [legal, employer-preset, custom]
+
+    LaborPolicy:
+      type: object
+      description: Jurisdiction ruleset constraining valid split schemes.
+      required: [id, countryCode]
+      properties:
+        id: { type: string, example: "br-clt" }
+        countryCode: { type: string, example: BR }
+        label: { type: string, example: "Brazil — CLT Art. 134" }
+        maxPeriods: { type: integer, example: 3 }
+        minMainBlockDays: { type: integer, example: 14 }
+        minOtherBlockDays: { type: integer, example: 5 }
+        allowSellBack: { type: boolean, example: true }
+        maxSellBackFraction: { type: number, example: 0.3333, description: "e.g. sell up to 1/3" }
+        mustFinishBeforeDeadline: { type: boolean, example: true }
+        submitAsSingleBlock: { type: boolean, example: true, description: "Whole entitlement scheduled at once" }
+        presets:
+          type: array
+          items: { $ref: "#/components/schemas/SplitScheme" }
+
+    OptimizeInput:
+      type: object
+      required: [countryCode, workingWeek, entitlementDays, period]
+      properties:
+        countryCode: { type: string, example: BR }
+        regionCode: { type: string, example: PE }
+        cityCode: { type: string, example: RECIFE }
+        workingWeek:
+          type: array
+          description: 7 booleans, index 0=Sunday .. 6=Saturday.
+          items: { type: boolean }
+          example: [false, true, true, true, true, true, false]
+        entitlementDays: { type: integer, example: 30 }
+        sellBackDays: { type: integer, example: 10, description: "abono pecuniário; must satisfy policy" }
+        period:
+          type: object
+          required: [from, to]
+          properties:
+            from: { type: string, format: date, example: "2026-07-10" }
+            to: { type: string, format: date, example: "2027-07-09" }
+        policyId: { type: string, example: "br-clt" }
+        schemeId: { type: string, example: "br-30-14-11-5" }
+        customScheme: { $ref: "#/components/schemas/SplitScheme" }
+        customHolidays:
+          type: array
+          items: { $ref: "#/components/schemas/Holiday" }
+          description: User-added/edited holidays merged into the calendar.
+
+    VacationWindow:
+      type: object
+      required: [startDate, endDate, daysSpent, extraDays, totalRestDays, efficiency]
+      properties:
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        daysSpent: { type: integer, description: "Vacation days consumed in this block" }
+        extraDays: { type: integer, description: "Free days gained (weekends + holidays bridged)" }
+        totalRestDays: { type: integer, description: "Consecutive days off" }
+        efficiency: { type: number, description: "totalRestDays / daysSpent" }
+
+    OptimizeResult:
+      type: object
+      required: [scheme, plans]
+      properties:
+        scheme: { $ref: "#/components/schemas/SplitScheme" }
+        plans:
+          type: array
+          description: One entry per block of the split, each in its best window.
+          items: { $ref: "#/components/schemas/VacationWindow" }
+        totalRestDays: { type: integer }
+        totalDaysSpent: { type: integer }
+        overallEfficiency: { type: number }
+
+    StudyInput:
+      type: object
+      required: [input]
+      properties:
+        input: { $ref: "#/components/schemas/OptimizeInput" }
+        result: { $ref: "#/components/schemas/OptimizeResult" }
+        title: { type: string }
+
+    Study:
+      allOf:
+        - $ref: "#/components/schemas/StudyInput"
+        - type: object
+          required: [id, createdAt]
+          properties:
+            id: { type: string }
+            createdAt: { type: string, format: date-time }
+            updatedAt: { type: string, format: date-time }
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
+        code: { type: string }
+        details: { type: object, additionalProperties: true }

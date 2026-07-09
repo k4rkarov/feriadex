@@ -1,0 +1,38 @@
+.group {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.legend {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.on,
+.off {
+  min-width: 3rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 0.8125rem;
+}
+
+.on {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.off {
+  background: var(--surface);
+  color: var(--muted);
+}

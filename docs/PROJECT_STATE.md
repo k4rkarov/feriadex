@@ -1,0 +1,91 @@
+# PROJECT_STATE
+
+> Living snapshot of where Feriadex is. Update every working session.
+> Last updated: 2026-07-09.
+
+## Phase
+**Phase 2 — App shell + first UI (in progress).** Phase 1 (engine + data) done. Monorepo tooling live. Three
+packages built and **fully tested (31 tests green, typecheck clean)**:
+- `@feriadex/core` — date utils, Computus (`easterSunday`), calendar, bridge
+  optimizer (`evaluateWindow`/`optimizeSingleBlock`), split validation +
+  greedy `solveSplit`.
+- `@feriadex/holidays` — BR national + movable holidays computed at runtime
+  (`brNationalHolidays`/`brProvider`), official vs optional tagged; **state
+  (estadual) holidays baked** from joaopbini/feriados-brasil (MIT) via
+  `scripts/import-estadual.ts` → `brStateHolidays`/`brProviderFor` (coverage
+  through 2026). Municipal deferred (chunked/lazy in app).
+- `@feriadex/policies` — BR/CLT pack + RH presets, validated against the floor.
+
+- `@feriadex/i18n` — minimal `t()` + pt-BR catalog (next-intl/locale routing later).
+
+**App shell built** (`apps/web`): Next.js App Router, **static export**
+(`output: 'export'`, builds to `out/`, ~107 KB first load, prerendered pt-BR
+for SEO), Tailwind (shared preset) + CSS Modules + dark-mode tokens. Working
+UI (`features/optimizer`): pick state + vacation days → ranked windows; CLT
+preset dropdown → split plan. Wired to all four packages. No shadcn yet; no
+custom period/working-week/URL-share yet.
+
+Form now covers state, vacation days, working-week, custom period, include-
+optional, and the **custom split editor with live CLT validation** (the
+differentiator). **CLT Art. 134 §3** (no start within 2 days before a
+holiday/weekly rest) enforced via `allowStart` gate; toggle in the UI.
+Legal/RH rule → code mapping in `docs/COMPLIANCE.md`.
+
+Verified: `next build` clean, typecheck clean (all packages + web), **42 tests
+green**. Run tests: `corepack pnpm test`; run app: `corepack pnpm --filter web dev`
+(pnpm not global — use corepack).
+
+## Repository contents
+- `README.md` — one-line product description.
+- `CLAUDE.md` — repo working rules for contributors/AI.
+- `docs/REVERSE_ENGINEERING.md` — analysis of folgaextra (algorithm, data shape,
+  split gap §4).
+- `docs/ARCHITECTURE.md`, `docs/api/openapi.yaml`, `docs/AI_CONTEXT.md`,
+  `docs/BACKLOG.md`, `docs/KNOWLEDGE_GAPS.md`, `docs/SESSION_SUMMARY.md`,
+  this file.
+
+## Decisions made
+1. Product = multi-country vacation optimizer; MVP = Brazil clone of folgaextra.
+2. Stack: TS monorepo (pnpm+Turborepo), Next.js App Router, Tailwind+shadcn,
+   date-fns (Temporal later), Zod, next-intl.
+3. Architecture: pure `packages/core`; pluggable `holidays` adapters + `policies`
+   packs + `i18n` — country logic is data, not code (ARCHITECTURE §4/§6).
+4. Holiday data from government/public APIs (BrasilAPI for BR). No runtime
+   dependency on folgaextra's API.
+5. Persistence: MVP uses URL-encoded state + localStorage; Postgres later.
+6. Own REST API `/api/v1` designed in openapi.yaml.
+7. Differentiator: configurable split schemes with CLT + employer (RH) rules,
+   user-editable (REVERSE_ENGINEERING §4 / BACKLOG Epic C).
+8. MVP is **Portuguese-first (pt-BR), Brazil only**. English/other countries
+   deferred; architecture keeps expansion additive. Code in English, UI in
+   pt-BR via i18n.
+9. **Front-end only MVP** — no backend, no runtime API. Next.js **static
+   export** (SSG) deployed to a CDN.
+10. Styling = **Tailwind utilities + colocated CSS Modules**; no inline CSS.
+11. Holidays = **build-time static dataset** (national + state); municipal via
+    user-added custom holidays. No runtime fetch / no CORS.
+12. Structure = **keep the monorepo** (`packages/*` + `apps/web`).
+
+## Decisions pending
+- Source for the build-time **state** holiday dataset (G-H2 — strategy set,
+  source TBD).
+- Preset ownership model → whether a DB/accounts are needed later (G-P1;
+  not blocking front-end MVP).
+- Deadline/concessive-period input contract (G-P2).
+- Whether Region→City model generalizes internationally (G-I1; future).
+
+## Next steps (in order)
+1. ~~Engine + data + policy pack (Epic A/B/C1–C3/D1–D3).~~ **Done.**
+2. ~~App shell + first UI (Next static export, optimizer + CLT split).~~ **Done.**
+3. Flesh out the form: working-week, custom period, sell-back (E1); custom
+   split editor with live CLT validation (E2/C6).
+4. Visual calendar for results (E3); URL-encoded shareable study + localStorage (E4).
+5. shadcn/ui components + polish (E5); eslint/prettier + CI (A2/A3).
+6. Municipal holidays: chunk per-UF + lazy-load (D4).
+
+## Known reference facts (from reverse-engineering, for reuse)
+- folgaextra API shape (studied, not consumed): `service.php?type=state|city`,
+  `holidayservicev2.php?datestart=DD/MM/YYYY&dateend=..&uf=..&city=..` →
+  `{date, description, origin: national|uf|city, days}`, `study.php` CRUD.
+- Config model: working-week mask (Sun..Sat), vacationDays (default 10),
+  compensationDays, vacationSplit, period (12-months-from-today | custom range).

@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens — the only place globals live (see docs/CONVENTIONS.md §2). */
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #16181d;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --border: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1115;
+    --surface: #171a21;
+    --fg: #e6e8ec;
+    --muted: #9aa1ac;
+    --accent: #3b82f6;
+    --border: #262b34;
+  }
+}
+
+html,
+body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+}
