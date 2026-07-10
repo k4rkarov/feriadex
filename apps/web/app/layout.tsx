@@ -4,14 +4,43 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Background } from "../components/Background";
 import { asset } from "../lib/asset";
+import { SITE_URL } from "../lib/site";
 import "../styles/globals.css";
 
+const OG_IMAGE = `${SITE_URL}/images/icon.png`;
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: t("app.title"),
   description: t("app.tagline"),
+  keywords: [
+    "férias",
+    "feriados",
+    "emendar feriado",
+    "CLT",
+    "calendário",
+    "descanso",
+    "planejamento de férias",
+    "Brasil",
+  ],
   icons: {
     icon: asset("/images/icon.png"),
     apple: asset("/images/icon.png"),
+  },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: SITE_URL,
+    siteName: t("app.title"),
+    title: t("app.title"),
+    description: t("app.tagline"),
+    images: [{ url: OG_IMAGE }],
+  },
+  twitter: {
+    card: "summary",
+    title: t("app.title"),
+    description: t("app.tagline"),
+    images: [OG_IMAGE],
   },
 };
 

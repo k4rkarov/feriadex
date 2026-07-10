@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { partitionsInto } from "@feriadex/core";
 import type { LaborPolicy } from "@feriadex/policies";
 import { t } from "@feriadex/i18n";
@@ -15,24 +15,47 @@ function equalize(n: number, total: number): string[] {
   return Array.from({ length: n }, (_, i) => String(base + (i < rem ? 1 : 0)));
 }
 
+export interface SplitInitial {
+  availableDays?: number;
+  periods?: number;
+  banco?: number;
+  blocks?: number[];
+}
+
 export function SplitEditor({
   policy,
   onChange,
   schemes,
   selectedScheme,
   onSelectScheme,
+  initial,
 }: {
   policy: LaborPolicy;
   onChange: (config: SplitConfig | null) => void;
   schemes: Scheme[];
   selectedScheme: number;
   onSelectScheme: (i: number) => void;
+  initial?: SplitInitial;
 }) {
+  // Defaults must match SSR; a shared study seeds these post-mount (below).
   const [availSelect, setAvailSelect] = useState("30");
   const [availText, setAvailText] = useState("30");
   const [bancoText, setBancoText] = useState("0");
   const [periods, setPeriods] = useState(3);
   const [blocks, setBlocks] = useState<string[]>(["10", "10", "10"]);
+
+  // Seed once from a shared link (arrives after mount → no hydration mismatch).
+  const seeded = useRef(false);
+  useEffect(() => {
+    if (seeded.current || !initial) return;
+    seeded.current = true;
+    const d = initial.availableDays ?? 30;
+    setAvailSelect(d === 20 ? "20" : d === 30 ? "30" : "other");
+    setAvailText(String(d));
+    setBancoText(String(initial.banco ?? 0));
+    if (initial.periods) setPeriods(initial.periods);
+    if (initial.blocks) setBlocks(initial.blocks.map(String));
+  }, [initial]);
 
   const allowCustom = policy.minMainBlockDays <= 1; // free mode
   const otherMode = availSelect === "other";

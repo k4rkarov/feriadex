@@ -34,21 +34,20 @@
 - [x] `done` D3. State (regional) holidays for BR — baked from an open MIT dataset (see DATA_LICENSE.md) (MIT) via `scripts/import-estadual.ts` → `brStateHolidays`/`brProviderFor`. Coverage through 2026 (G-H5).
 - [x] `done` D4. Municipal holidays baked from the open dataset per UF + lazy `brMunicipalHolidays(uf, ibge, from, to)` loader (dynamic import, code-split). (Redesign R1.2)
 - [x] `done` D6. City list per UF from IBGE + lazy `brCities(uf)` loader. (Redesign R1.1)
-- [x] `done` D7-lib. `countHolidays(national, regional, municipal)` with level precedence/dedupe. (Redesign R1.3)
-- [ ] `todo` D8. Enrich capital municipal names from the reference app (slow, paced), where the open dataset is generic.
-- [ ] `todo` D7. Holiday-count helper (national/regional/municipal) for the live counter. (Redesign R1.3)
+- [x] `done` D7. `countHolidays` + `holidayLists` (4 levels incl. facultativo) with precedence/dedupe for the live counter.
 - [x] `done` D5. Movable feasts via Computus (see B3).
+- [ ] `todo` D8. Enrich capital municipal names where the open dataset is generic.
 
 ## Epic R — Redesign v1 (P0 now) — see docs/REDESIGN.md
-- [ ] `todo` R2.1 `describeWindow` core helper (per-day vacation/extra/extra-holiday).
-- [ ] `todo` R3.1 Theme toggle (system default, light/dark, persisted).
-- [ ] `todo` R3.2 Wider layout + larger type; less side padding.
-- [ ] `todo` R3.3 Header info button → CLT tooltip + link to the law (new tab); remove on-screen hint.
-- [ ] `todo` R3.4 Footer: privacy-policy link + copyright (+ privacy page stub).
-- [ ] `todo` R4.1 City dropdown filtered by state (data ready: `brCities`).
-- [ ] `todo` R4.2 Live holiday counter Nac/Est/Mun (data ready: `countHolidays`).
-- [ ] `todo` R4.3 Remove include-optional toggle (always on).
-- [ ] `todo` R4.4 Remove "Dias de férias"; entitlement is the only days field (default 30).
+- [x] `done` R2.1 `describeWindow` core helper (per-day vacation/extra/extra-holiday).
+- [x] `done` R3.1 Theme toggle (system default, light/dark, persisted).
+- [x] `done` R3.2 Wider layout + larger type; less side padding.
+- [x] `done` R3.3 Header info button → CLT tooltip + link to the law (new tab); remove on-screen hint.
+- [x] `done` R3.4 Footer: privacy-policy link + copyright (+ privacy page stub).
+- [x] `done` R4.1 City dropdown filtered by state (data ready: `brCities`).
+- [x] `done` R4.2 Live holiday counter Nac/Est/Mun (data ready: `countHolidays`).
+- [x] `done` R4.3 Remove include-optional toggle (always on).
+- [x] `done` R4.4 Remove "Dias de férias"; entitlement is the only days field (default 30).
 - [x] `done` R5.1 Scheme tabs (RH presets) + custom inputs; **auto re-calc** on change; live CLT validation.
 - [x] `done` R5.2 Action is "Calcular" (auto — no button); single-block path removed.
 - [x] `done` R5.3 `CalendarView` month-grid (azul/roxo/vermelho legend, Início/Retorno/Extras/Total per block).
@@ -74,11 +73,11 @@
 - [ ] `todo` G3. Second labor-policy pack proving the policy abstraction.
 - [ ] `todo` G4. Supported-countries registry wiring provider + policy + locale.
 
-## Epic I — Deploy (P1)
-- [ ] `todo` I1. GitHub Actions: build `apps/web` → publish `out/` to Pages (with `.nojekyll`).
+## Epic I — Deploy (P1) — live at k4rkarov.github.io/feriadex
+- [x] `done` I1. GitHub Actions build → Pages (`.nojekyll`, `NEXT_PUBLIC_BASE_PATH=/feriadex`).
 - [ ] `todo` I2. Custom domain: `CNAME` + DNS (apex A/AAAA + `www` CNAME), HTTPS.
-- [ ] `todo` I3. Consider `trailingSlash: true` + `basePath` only if served from a subpath.
-- [ ] `todo` I4. Meta/OG tags, favicon, sitemap, robots — SEO/shareability.
+- [x] `done` I3. `basePath`/`assetPrefix` from env for the project page; asset() helper for CSS/img/metadata.
+- [x] `done` I4. Meta/OG + Twitter tags, favicon, sitemap.xml, robots.txt.
 
 ## Epic J — Monetization (P3, deferred) — see docs/MONETIZATION.md
 - [ ] `todo` J1. Privacy policy + terms pages (pt-BR); LGPD consent banner gating scripts.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { addDays, bestSplit, type WorkingWeek } from "@feriadex/core";
 import {
   brCities,
@@ -22,40 +22,60 @@ import {
   type Scheme,
   type SplitConfig,
 } from "./model";
+import { encodeStudy, parseStudy, type Study } from "../../lib/share";
 import { InfoTip } from "../../components/InfoTip";
 import { Toggle } from "../../components/Toggle";
 import { SearchSelect } from "../../components/SearchSelect";
 import { WorkingWeekPicker } from "./WorkingWeekPicker";
-import { SplitEditor } from "./SplitEditor";
+import { SplitEditor, type SplitInitial } from "./SplitEditor";
 import { HolidayCounter } from "./HolidayCounter";
 import { CalendarView } from "./CalendarView";
 import s from "./Optimizer.module.css";
 
 export function Optimizer() {
-  const [uf, setUf] = useState(""); // starts empty → national-only
+  // Defaults must match the server-rendered HTML; a shared study from the URL
+  // is applied AFTER mount (effect below) to avoid a hydration mismatch.
+  const [uf, setUf] = useState("");
   const [cities, setCities] = useState<BrCity[]>([]);
   const [cityIbge, setCityIbge] = useState<number | null>(null);
   const [week, setWeek] = useState<WorkingWeek>(DEFAULT_WEEK);
   const [from, setFrom] = useState(todayISO());
-  // Default window = next 12 months; end is one day short so a yearly holiday
-  // on the exact boundary date isn't counted at both ends.
   const [to, setTo] = useState(addDays(plusYearsISO(todayISO(), 1), -1));
   const [followClt, setFollowClt] = useState(true);
-  // Holiday dates the user unchecked (will work that day → not counted as off).
   const [excluded, setExcluded] = useState<ReadonlySet<string>>(new Set());
   const [sets, setSets] = useState<HolidaySets | null>(null);
   const [config, setConfig] = useState<SplitConfig | null>(null);
+  const [copied, setCopied] = useState(false);
+  const [splitInitial, setSplitInitial] = useState<SplitInitial | null>(null);
+  const [wantDiv, setWantDiv] = useState<number[] | null>(null);
+
+  // Apply a shared study from the URL once, after hydration.
+  useEffect(() => {
+    const p = parseStudy(window.location.search);
+    if (p.uf !== undefined) setUf(p.uf);
+    if (p.city !== undefined) setCityIbge(p.city);
+    if (p.clt !== undefined) setFollowClt(p.clt);
+    if (p.week) setWeek(p.week);
+    if (p.from) setFrom(p.from);
+    if (p.to) setTo(p.to);
+    if (p.excluded) setExcluded(new Set(p.excluded));
+    if (p.div) setWantDiv(p.div);
+    setSplitInitial({
+      availableDays: p.availableDays,
+      periods: p.div?.length,
+      banco: p.banco,
+      blocks: p.clt === false ? p.div : undefined,
+    });
+  }, []);
 
   const policy = followClt ? CLT : PJ;
 
-  // Load the city list when the state changes.
+  // Load the city list when the state changes (keeps a restored city on mount;
+  // the city is reset in the state selector's onChange, not here).
   useEffect(() => {
     let live = true;
     brCities(uf).then((c) => {
-      if (live) {
-        setCities(c);
-        setCityIbge(null);
-      }
+      if (live) setCities(c);
     });
     return () => {
       live = false;
@@ -124,7 +144,21 @@ export function Optimizer() {
   }, [config, sets, week, policy, from, to, excluded]);
 
   const [schemeIdx, setSchemeIdx] = useState(0);
-  useEffect(() => setSchemeIdx(0), [schemeData]);
+  const appliedDiv = useRef(false);
+  useEffect(() => {
+    if (!schemeData) return;
+    // On first load, select the scheme matching the shared link's `div`.
+    if (!appliedDiv.current && followClt && wantDiv?.length) {
+      appliedDiv.current = true;
+      const key = [...wantDiv].sort((a, b) => a - b).join(",");
+      const i = schemeData.schemes.findIndex(
+        (sc) => [...sc.parts].sort((a, b) => a - b).join(",") === key,
+      );
+      setSchemeIdx(i >= 0 ? i : 0);
+    } else {
+      setSchemeIdx(0);
+    }
+  }, [schemeData]);
 
   // Per-period month options for the selected scheme (+ banco block).
   const periods = useMemo(() => {
@@ -154,6 +188,33 @@ export function Optimizer() {
     return m;
   }, [sets]);
 
+  const copyLink = () => {
+    const cur =
+      schemeData?.schemes[
+        Math.min(schemeIdx, (schemeData?.schemes.length ?? 1) - 1)
+      ];
+    const study: Study = {
+      uf,
+      city: cityIbge,
+      clt: followClt,
+      availableDays: config?.availableDays ?? 30,
+      div: config?.customParts ?? cur?.parts ?? [],
+      banco: config?.banco ?? 0,
+      from,
+      to,
+      week,
+      excluded: [...excluded],
+    };
+    const url = `${window.location.origin}${window.location.pathname}?${encodeStudy(study)}`;
+    navigator.clipboard
+      ?.writeText(url)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch(() => {});
+  };
+
   return (
     <section className={s.wrap}>
       <div className={s.controls}>
@@ -178,7 +239,10 @@ export function Optimizer() {
           </span>
           <SearchSelect
             value={uf}
-            onChange={setUf}
+            onChange={(v) => {
+              setUf(v);
+              setCityIbge(null);
+            }}
             options={[
               { value: "", label: t("form.stateNone") },
               ...BR_STATES.map((st) => ({ value: st.uf, label: st.name })),
@@ -256,6 +320,7 @@ export function Optimizer() {
               : 0
           }
           onSelectScheme={setSchemeIdx}
+          initial={splitInitial ?? undefined}
         />
         {noFit && <p className={s.error}>{t("result.noFit")}</p>}
         {periods && schemeData && (
@@ -263,6 +328,8 @@ export function Optimizer() {
             periods={periods}
             cal={schemeData.cal}
             names={holidayNames}
+            onShare={copyLink}
+            copied={copied}
           />
         )}
       </div>

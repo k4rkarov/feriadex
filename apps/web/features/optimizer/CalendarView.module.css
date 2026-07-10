@@ -170,6 +170,22 @@
   color: var(--fg);
 }
 
+.share {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.share:hover {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
 .months {
   display: flex;
   flex-wrap: wrap;

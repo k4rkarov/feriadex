@@ -5,6 +5,24 @@
 
 ---
 
+## Session 20 — 2026-07-10 — Deploy + SEO + mobile polish
+**Done**
+- **Deployed** to GitHub Pages (project page `k4rkarov.github.io/feriadex`):
+  `.github/workflows/deploy.yml` (build → Pages), `basePath`/`assetPrefix` from
+  `NEXT_PUBLIC_BASE_PATH`, `lib/asset.ts` prefixing CSS/img/metadata paths.
+- **SEO**: OpenGraph + Twitter meta, `metadataBase`, keywords, favicon/apple
+  icon (icon.png), `app/robots.ts` + `app/sitemap.ts` (`lib/site.ts`).
+- **Branding**: logo in header, favicon; decorative animated background
+  (palms/sun/moon/clouds) — later kept, wallpaper removed.
+- **Mobile**: viewport meta, overflow guard, stacking/centering ≤640px,
+  one-line weekday buttons, iOS date-input overflow fix, InfoTip + calendar
+  balloons clamped within viewport, per-holiday clickable day names.
+- Footer credit "@k4rkarov". Docs synced (Epic R/I/D done).
+
+**Next:** share via URL (E4), period-overlap handling (G-A3), CI/eslint.
+
+---
+
 ## Session 19 — 2026-07-09 — UI iteration → v1 done (committed)
 **Focus:** many rounds of UX feedback turning the shell into a finished v1.
 
