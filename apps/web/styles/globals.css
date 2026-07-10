@@ -52,6 +52,8 @@ html {
 html,
 body {
   min-height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--fg);
 }

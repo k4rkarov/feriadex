@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { t } from "@feriadex/i18n";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
@@ -15,6 +15,11 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 // Apply the saved/system theme before paint to avoid a flash.
 const themeInit = `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t)}else{document.documentElement.setAttribute('data-theme',matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}}catch(e){}})();`;
 
@@ -28,7 +33,7 @@ export default function RootLayout({
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <Background />
-        <div className="relative z-10 mx-auto w-full max-w-4xl px-6">
+        <div className="relative z-10 mx-auto w-full max-w-4xl px-4 sm:px-6">
           <Header />
           <main>{children}</main>
           <Footer />

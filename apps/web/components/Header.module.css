@@ -12,6 +12,22 @@
   height: 60px;
   width: auto;
   display: block;
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .header {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+  .logo {
+    height: 40px;
+  }
+  .actions {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .actions {

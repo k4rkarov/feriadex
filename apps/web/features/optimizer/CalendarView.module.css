@@ -181,6 +181,28 @@
   flex: 1;
 }
 
+@media (max-width: 640px) {
+  .month {
+    min-width: 100%;
+  }
+  .badges {
+    margin-left: 0;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .yearGroup {
+    flex-basis: 100%;
+  }
+  .periodTabs,
+  .optionTabs,
+  .summary,
+  .legend,
+  .months {
+    justify-content: center;
+  }
+}
+
 .monthLabel {
   font-weight: 600;
   text-align: center;

@@ -160,6 +160,21 @@
   }
 }
 
+@media (max-width: 640px) {
+  .sun {
+    width: 56px;
+    height: 56px;
+    top: 3.5rem;
+    right: 1rem;
+  }
+  .moon {
+    width: 46px;
+    height: 46px;
+    top: 3.5rem;
+    right: 1rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .crown,
   .sun,

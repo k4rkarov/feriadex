@@ -23,6 +23,26 @@
   min-width: 0;
 }
 
+@media (max-width: 640px) {
+  .controls {
+    justify-content: center;
+  }
+  .controls > .field,
+  .weekWrap {
+    flex-basis: 100%;
+  }
+  .toggleWrap {
+    justify-content: flex-start;
+  }
+  .h2 {
+    justify-content: center;
+    width: 100%;
+  }
+  .split {
+    text-align: center;
+  }
+}
+
 .field {
   display: flex;
   flex-direction: column;

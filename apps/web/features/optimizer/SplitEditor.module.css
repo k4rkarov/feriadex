@@ -42,6 +42,40 @@
   min-width: 0;
 }
 
+@media (max-width: 640px) {
+  .row {
+    justify-content: center;
+  }
+  .num {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .num select,
+  .num input {
+    min-width: 0;
+  }
+  .blockField {
+    flex: 1 1 4rem;
+  }
+  .blocks {
+    justify-content: center;
+  }
+  .totalWrap {
+    width: 100%;
+    justify-content: center;
+  }
+  .radios,
+  .stepper {
+    justify-content: center;
+  }
+  .schemesInline {
+    flex-basis: 100%;
+  }
+  .tabs {
+    justify-content: center;
+  }
+}
+
 .row select,
 .row input {
   box-sizing: border-box;

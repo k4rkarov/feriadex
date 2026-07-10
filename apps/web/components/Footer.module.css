@@ -11,6 +11,15 @@
   color: var(--muted);
 }
 
+@media (max-width: 640px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
 .link {
   color: var(--accent);
   text-decoration: none;

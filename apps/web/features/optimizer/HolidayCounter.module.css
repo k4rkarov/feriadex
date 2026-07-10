@@ -17,6 +17,12 @@
   gap: 0.5rem;
 }
 
+@media (max-width: 640px) {
+  .chips {
+    justify-content: center;
+  }
+}
+
 .chip,
 .chipActive {
   border: 1px solid var(--border);
