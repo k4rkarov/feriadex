@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   addDays,
+  bestAssignment,
   dayOfWeek,
   describeWindow,
+  windowsOverlap,
   type Calendar,
   type DayKind,
   type VacationWindow,
@@ -45,13 +47,23 @@ export function CalendarView({
 }) {
   const [activePeriod, setActivePeriod] = useState(0);
   const [openDay, setOpenDay] = useState<string | null>(null);
-  const [sel, setSel] = useState<number[]>(() => periods.map(() => 0));
+
+  // Best conflict-free choice across periods (no two windows share a rest day);
+  // its picks seed the selection and its total is the honest "max possible".
+  const assignment = useMemo(
+    () => bestAssignment(periods.map((p) => p.options)),
+    [periods],
+  );
+
+  const [sel, setSel] = useState<number[]>(
+    () => assignment?.picks ?? periods.map(() => 0),
+  );
 
   // Reset selections when the periods change (identity is memoized upstream).
   useEffect(() => {
     setActivePeriod(0);
-    setSel(periods.map(() => 0));
-  }, [periods]);
+    setSel(assignment?.picks ?? periods.map(() => 0));
+  }, [periods, assignment]);
 
   const pi = Math.min(activePeriod, periods.length - 1);
   const period = periods[pi]!;
@@ -65,11 +77,16 @@ export function CalendarView({
       return next;
     });
 
-  // Best achievable total: the top (most-rest) option of every period.
-  const maxTotal = periods.reduce(
-    (sum, p) => sum + (p.options[0]?.totalRestDays ?? 0),
-    0,
-  );
+  // Best achievable total that all periods can hold at once (no overlap).
+  const maxTotal =
+    assignment?.total ??
+    periods.reduce((sum, p) => sum + (p.options[0]?.totalRestDays ?? 0), 0);
+
+  // Windows currently chosen by the OTHER periods — options that overlap any of
+  // them are unpickable (would double-book a day). Keeps the plan conflict-free.
+  const otherSelected = periods
+    .map((p, i) => (i === pi ? null : p.options[Math.min(sel[i] ?? 0, p.options.length - 1)]))
+    .filter((w): w is VacationWindow => w != null);
   // Extra days actually gained across the currently selected months.
   const diasExtras = periods.reduce((sum, p, i) => {
     const w = p.options[Math.min(sel[i] ?? 0, p.options.length - 1)];
@@ -134,19 +151,24 @@ export function CalendarView({
           <div key={year} className={s.yearGroup}>
             <span className={s.yearLabel}>{year}</span>
             <div className={s.monthTabs}>
-              {period.options.map((o, i) =>
-                o.startDate.slice(0, 4) === year ? (
+              {period.options.map((o, i) => {
+                if (o.startDate.slice(0, 4) !== year) return null;
+                const conflict =
+                  i !== oi && otherSelected.some((w) => windowsOverlap(w, o));
+                return (
                   <button
                     key={o.startDate}
                     type="button"
                     className={i === oi ? s.optActive : s.opt}
                     onClick={() => pickOption(i)}
+                    disabled={conflict}
+                    title={conflict ? t("cal.optConflict") : undefined}
                   >
                     {monthName(o.startDate)}{" "}
-            <em className={s.numExtra}>+{extrasOf(o)}</em>
+                    <em className={s.numExtra}>+{extrasOf(o)}</em>
                   </button>
-                ) : null,
-              )}
+                );
+              })}
             </div>
           </div>
         ))}

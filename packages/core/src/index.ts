@@ -30,6 +30,12 @@ export {
   rankWindows,
   type OptimizeOptions,
 } from "./bridge/optimize";
+export {
+  windowsOverlap,
+  restSpan,
+  bestAssignment,
+  type Assignment,
+} from "./bridge/overlap";
 
 export {
   validateScheme,

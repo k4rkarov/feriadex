@@ -149,6 +149,12 @@
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
+.opt:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
 .opt em,
 .optActive em {
   font-style: normal;

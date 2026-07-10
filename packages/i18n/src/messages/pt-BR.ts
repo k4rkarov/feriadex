@@ -95,6 +95,7 @@ export const ptBR = {
   "cal.legend.extraHoliday": "extra",
   "cal.maxLabel": "Máx. possível",
   "cal.extrasBadge": "Dias extras",
+  "cal.optConflict": "Este mês se sobrepõe a outro período já escolhido",
   "share.copy": "Copiar link",
   "share.copied": "Link copiado!",
 

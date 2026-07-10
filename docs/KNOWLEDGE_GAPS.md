@@ -38,10 +38,13 @@
   it interacts with min-block sizes across schemes.
 
 ## Algorithm
-- **G-A3 — Period overlap.** Each period's month options are chosen
-  independently, so two periods can pick the same month and overlap. The
-  `Máx. possível` badge sums each period's best window independently → an upper
-  estimate, not guaranteed simultaneously achievable. Deferred (owner OK'd).
+- **G-A3 — Period overlap — RESOLVED (2026-07-10).** Overlap is defined on the
+  full *rest span* `[start − leadingFree, end + trailingFree]` (not just booked
+  days), so no calendar day is ever counted as rest twice. Core `bestAssignment`
+  (`bridge/overlap.ts`) picks one conflict-free window per period maximizing
+  summed rest; `CalendarView` seeds its selection from it, makes `Máx. possível`
+  the honest achievable total, and disables month options that would collide
+  with another period's current pick.
 - **G-A4 — Facultativos as a level.** Carnaval (seg/ter), Quarta de Cinzas and
   Corpus Christi are modeled as a 4th "facultativo" bucket, counted as days off
   by default (owner decision), each user-uncheckable. Strict-legal mode (only
