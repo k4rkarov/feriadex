@@ -1,4 +1,5 @@
-# Feriadex
+
+<h1 align=center><img src="apps/web/public/images/logo.png" width="50%"></h1>
 
 Feriadex finds the **best days to take vacation** — bridging holidays and
 weekends (*emendar*) to maximize consecutive rest while sacrificing the fewest

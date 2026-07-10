@@ -8,7 +8,7 @@
   align-items: flex-end;
   justify-content: space-around;
   pointer-events: none;
-  opacity: 0.12;
+  opacity: 0.05;
 }
 
 .sun {
@@ -22,7 +22,7 @@
   background: radial-gradient(circle at 50% 45%, #fde68a, #f59e0b 70%);
   box-shadow: 0 0 34px 8px rgba(245, 158, 11, 0.35);
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.15;
   animation: sunPulse 7s ease-in-out infinite;
 }
 
@@ -54,7 +54,7 @@
   border-radius: 50%;
   background: radial-gradient(circle at 42% 40%, #f8fafc, #cbd5e1 75%);
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.15;
   animation: moonNeon 3.2s ease-in-out infinite;
 }
 
@@ -98,7 +98,7 @@
 
 .cloudFill {
   fill: #ffffff;
-  opacity: 0.01;
+  opacity: 0.02;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.06));
 }
 
