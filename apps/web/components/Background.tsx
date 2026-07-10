@@ -79,9 +79,9 @@ export function Background() {
             className={s.cloud}
             style={
               {
-                top: c.top,
-                left: c.left,
-                width: `${Math.round(120 * c.s)}px`,
+                "--top": c.top,
+                "--left": c.left,
+                "--w": `${Math.round(120 * c.s)}px`,
                 "--d": c.d,
                 "--dur": c.dur,
               } as CSSProperties

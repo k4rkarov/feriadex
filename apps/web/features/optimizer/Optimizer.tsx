@@ -158,6 +158,7 @@ export function Optimizer() {
     } else {
       setSchemeIdx(0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schemeData]);
 
   // Per-period month options for the selected scheme (+ banco block).

@@ -424,3 +424,18 @@ project's documentation baseline.
 - Data source will be government APIs (same class the reference app relies on).
 
 **Output:** reverse-engineering notes + roadmap + split gap (now consolidated in
+
+## Session — 2026-07-10 — overlap correctness + lint/CI
+- **G-A3 period overlap (RESOLVED).** New pure core `bridge/overlap.ts`:
+  `restSpan`, `windowsOverlap` (rest spans, incl. borrowed weekends/holidays),
+  and `bestAssignment` (DFS+prune, one conflict-free window per period,
+  max summed rest). `CalendarView` seeds its selection from it, shows the honest
+  `Máx. possível`, and disables month options that collide with another period.
+  +9 core tests (69 total green).
+- **A2 ESLint.** Flat config in `@feriadex/config/eslint` (js+ts recommended,
+  react-hooks, and a `no-restricted-syntax` guard banning inline `style`/`<style>`
+  to enforce the no-inline-CSS golden rule). Background keeps a scoped exception
+  (CSS custom-property forwarding only). Root `eslint.config.js`, `pnpm lint`.
+- **A3 CI.** `.github/workflows/ci.yml` — typecheck + lint + test on PR/push.
+- **Share button** moved next to the "Dias extras" badge (icon-only) + shared-URL
+  hydration fix (apply URL params after mount).

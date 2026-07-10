@@ -94,15 +94,17 @@ green**. Run tests: `corepack pnpm test`; run app: `corepack pnpm --filter web d
 - Whether Region→City model generalizes internationally (G-I1; future).
 
 ## Next steps (in order)
-1. **Share via URL** — serialize the study into the URL + localStorage. (E4)
-2. **Overlap between periods** — prevent/flag two periods picking the same month
-   (currently independent; the `Máx. possível` badge is an upper estimate). (G-A3)
-3. **eslint/prettier + CI** — lint on PR, run tests/build in the deploy Action. (A2/A3)
-4. **Polish** — shadcn components, empty/error states. (E5)
-5. **Custom domain** — `CNAME` + DNS; drop `NEXT_PUBLIC_BASE_PATH` from the workflow. (I2)
-6. **Monetization** (deferred) — privacy policy, LGPD consent, AdSense. (Epic J)
-7. **Data** — enrich municipal capital names (D8). Features: .ics export, compare
+1. **Polish** — shadcn components, empty/error states. (E5)
+2. **Custom domain** — `CNAME` + DNS; drop `NEXT_PUBLIC_BASE_PATH` from the workflow. (I2)
+3. **localStorage recents** — remember recent studies alongside the URL sharing. (E4 tail)
+4. **Monetization** (deferred) — privacy policy, LGPD consent, AdSense. (Epic J)
+5. **Data** — enrich municipal capital names (D8). Features: .ics export, compare
    scenarios, heatmap (Epic F). International: locale routing + 2nd country (Epic G).
+
+**Recently done:** share-via-URL (readable params) + hydration-safe restore (E4);
+period-overlap correctness — core `bestAssignment` + conflict-free UI selection,
+honest `Máx. possível` (G-A3); ESLint flat config with no-inline-CSS guard (A2) +
+CI workflow typecheck/lint/test (A3).
 
 (Done: engine + data + compliance + full redesign UI + **deploy (GitHub Pages)**
 + **SEO/OG/sitemap/robots**. See SESSION_SUMMARY.)

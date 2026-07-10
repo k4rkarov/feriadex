@@ -9,7 +9,7 @@ const LAW_URL =
 export function Header() {
   return (
     <header className={s.header}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {/* Plain <img>: static export can't use next/image's default loader. */}
       <img
         className={s.logo}
         src={asset("/images/logo.png")}

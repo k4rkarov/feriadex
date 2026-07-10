@@ -6,8 +6,8 @@
 
 ## Epic A — Foundation (P0)
 - [x] `done` A1. Scaffold pnpm+Turborepo monorepo; `apps/web` + `packages/*`.
-- [ ] `wip`  A2. Shared config package: tsconfig + tailwind preset **done**; eslint, prettier **todo**.
-- [ ] `todo` A3. CI: typecheck + lint + test on PR.
+- [x] `done` A2. Shared config package: tsconfig + tailwind preset + **flat ESLint config** (`@feriadex/config/eslint`, incl. a `no-inline-CSS` guard + react-hooks). Prettier deferred (ESLint + editor cover formatting).
+- [x] `done` A3. CI: typecheck + lint + test on PR/push (`.github/workflows/ci.yml`).
 - [x] `done` A4. Date utility module (`core/calendar/date.ts`) — single TZ-safe, day-granular seam (native UTC; date-fns swap later).
 
 ## Epic B — Core engine (P0) — *the value*

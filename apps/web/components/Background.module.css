@@ -86,6 +86,9 @@
 
 .cloud {
   position: absolute;
+  top: var(--top);
+  left: var(--left);
+  width: var(--w);
   animation: drift var(--dur, 18s) ease-in-out infinite alternate;
   animation-delay: var(--d, 0s);
 }
