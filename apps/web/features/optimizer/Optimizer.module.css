@@ -59,11 +59,20 @@
 .field select,
 .field input {
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 0.5rem 0.625rem;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
   color: var(--fg);
+}
+
+/* iOS date inputs have a fixed intrinsic width that overflows — reset it. */
+.field input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  max-width: 100%;
 }
 
 .field select {
