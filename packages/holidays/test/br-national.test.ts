@@ -12,7 +12,7 @@ describe("brNationalHolidays", () => {
     expect(byDate.get("2026-12-25")?.name).toBe("Natal");
   });
 
-  it("computes movable dates for 2026 (ground truth from folgaextra)", () => {
+  it("computes movable dates for 2026 (known real dates)", () => {
     expect(byDate.get("2026-04-03")?.name).toBe("Sexta-feira Santa");
     expect(byDate.get("2026-02-16")?.name).toBe("Carnaval (segunda)");
     expect(byDate.get("2026-02-17")?.name).toBe("Carnaval (terça)");

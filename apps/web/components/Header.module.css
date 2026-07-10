@@ -8,10 +8,10 @@
   margin-bottom: 1.5rem;
 }
 
-.title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+.logo {
+  height: 60px;
+  width: auto;
+  display: block;
 }
 
 .actions {

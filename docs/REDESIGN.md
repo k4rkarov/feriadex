@@ -6,8 +6,8 @@
 > doc is kept as the original spec/record; current state is in PROJECT_STATE.
 
 > Spec + action plan for reworking the app after the first hands-on test.
-> Target reference: the folgaextra screenshots committed at repo root
-> (`folgaextra-tela1.png` = input form, `folgaextra-tela2.png` = calendar
+> Target reference: the reference screenshots (now removed)
+> (`the reference screenshots` = input form, `the reference screenshots` = calendar
 > result). This captures **decided** requirements so work survives a context
 > reset. Engine/data/compliance are done; this is the UI + missing data layer.
 
@@ -71,7 +71,7 @@ per-day `{date, kind}` classification for a window (feeds the calendar).
   consumption; both from static/public sources fetched once at build.
   - **Cities: IBGE** localidades API per UF → `src/data/cities/{UF}.json` =
     `[{ ibge, name }]`. Official, structured, and the IBGE id is the join key.
-  - **Municipal: joaopbini** per-year JSON (static GitHub, no rate limit),
+  - **Municipal: the open dataset** per-year JSON (static GitHub, no rate limit),
     grouped by UF, keyed by IBGE code → `src/data/municipal/{UF}.json` =
     `{ [ibge]: [{ date, name }] }`. Years 2024–2026. Capitals have real names
     (Rio: "São Sebastião/São Jorge"; Recife: "N. Sra. do Carmo").
@@ -80,9 +80,9 @@ per-day `{date, kind}` classification for a window (feeds the calendar).
   - Data size ~1.6 MB total (cities 268 KB + municipal 1.3 MB across 27 files)
     → **lazy-load per UF** in the app (dynamic import / static asset), never
     bundle all at once.
-  - **folgaextra dropped as a source** (mass fetch hit Cloudflare rate limit
-    "Error 1002"; and IBGE+joaopbini is cleaner and rate-limit-free). May still
-    enrich a few capitals' names from folgaextra later, slowly.
+  - **the reference app dropped as a source** (mass fetch hit Cloudflare rate limit
+    "Error 1002"; and IBGE+the open dataset is cleaner and rate-limit-free). May still
+    enrich a few capitals' names from the reference app later, slowly.
   - **Counter dedupe (R1.3):** municipal files include some dates that overlap
     national/estadual (e.g. Corpus Christi tagged municipal). The calendar's
     holiday Set already dedupes for computation; the "N municipais" **count**
@@ -106,7 +106,7 @@ Ordered; each step ends green (tests + typecheck + `next build`).
 ### Phase R1 — Data layer (unblocks #6)
 - **R1.1** City list per UF: build-time importer (IBGE) → `packages/holidays`
   `brCities(uf)` + baked data. (BACKLOG D6)
-- **R1.2** Municipal holidays: importer baking joaopbini municipal per-UF into
+- **R1.2** Municipal holidays: importer baking the open dataset municipal per-UF into
   same-origin static assets (`apps/web/public`), lazy loader
   `brMunicipalHolidays(ibge, year)`. (BACKLOG D4)
 - **R1.3** Holiday-count helper: `counts = {national, regional, municipal}` for

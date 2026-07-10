@@ -6,7 +6,7 @@ valid vacation split schemes: min block sizes, max periods, deadlines, sell-back
 
 - `src/policy.ts` — `LaborPolicy` interface + `SplitScheme` model.
 - `src/packs/br/` — Brazil pack: CLT Art. 134 floor + common RH presets
-  (30d/20d schemes; see `docs/REVERSE_ENGINEERING.md` §4).
+  (common 30d/20d schemes).
 - `src/index.ts` — public entry.
 
 Adding a jurisdiction = new pack here, no engine change.

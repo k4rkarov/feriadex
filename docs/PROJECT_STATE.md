@@ -31,7 +31,7 @@ packages built and **fully tested (31 tests green, typecheck clean)**:
   greedy `solveSplit`.
 - `@feriadex/holidays` — BR national + movable holidays computed at runtime
   (`brNationalHolidays`/`brProvider`), official vs optional tagged; **state
-  (estadual) holidays baked** from joaopbini/feriados-brasil (MIT) via
+  (estadual) holidays baked** from an open MIT dataset (see DATA_LICENSE.md) (MIT) via
   `scripts/import-estadual.ts` → `brStateHolidays`/`brProviderFor` (coverage
   through 2026). Municipal deferred (chunked/lazy in app).
 - `@feriadex/policies` — BR/CLT pack + RH presets, validated against the floor.
@@ -58,24 +58,23 @@ green**. Run tests: `corepack pnpm test`; run app: `corepack pnpm --filter web d
 ## Repository contents
 - `README.md` — one-line product description.
 - `CLAUDE.md` — repo working rules for contributors/AI.
-- `docs/REVERSE_ENGINEERING.md` — analysis of folgaextra (algorithm, data shape,
   split gap §4).
 - `docs/ARCHITECTURE.md`, `docs/api/openapi.yaml`, `docs/AI_CONTEXT.md`,
   `docs/BACKLOG.md`, `docs/KNOWLEDGE_GAPS.md`, `docs/SESSION_SUMMARY.md`,
   this file.
 
 ## Decisions made
-1. Product = multi-country vacation optimizer; MVP = Brazil clone of folgaextra.
+1. Product = multi-country vacation optimizer; MVP = Brazil Brazilian vacation optimizer.
 2. Stack: TS monorepo (pnpm+Turborepo), Next.js App Router, Tailwind+shadcn,
    date-fns (Temporal later), Zod, next-intl.
 3. Architecture: pure `packages/core`; pluggable `holidays` adapters + `policies`
    packs + `i18n` — country logic is data, not code (ARCHITECTURE §4/§6).
 4. Holiday data from government/public APIs (BrasilAPI for BR). No runtime
-   dependency on folgaextra's API.
+   dependency on any third-party API.
 5. Persistence: MVP uses URL-encoded state + localStorage; Postgres later.
 6. Own REST API `/api/v1` designed in openapi.yaml.
 7. Differentiator: configurable split schemes with CLT + employer (RH) rules,
-   user-editable (REVERSE_ENGINEERING §4 / BACKLOG Epic C).
+   user-editable (BACKLOG Epic C).
 8. MVP is **Portuguese-first (pt-BR), Brazil only**. English/other countries
    deferred; architecture keeps expansion additive. Code in English, UI in
    pt-BR via i18n.
@@ -108,7 +107,7 @@ green**. Run tests: `corepack pnpm test`; run app: `corepack pnpm --filter web d
 (Done: engine + data + compliance + full redesign UI — see SESSION_SUMMARY.)
 
 ## Known reference facts (from reverse-engineering, for reuse)
-- folgaextra API shape (studied, not consumed): `service.php?type=state|city`,
+- the reference app API shape (studied, not consumed): `service.php?type=state|city`,
   `holidayservicev2.php?datestart=DD/MM/YYYY&dateend=..&uf=..&city=..` →
   `{date, description, origin: national|uf|city, days}`, `study.php` CRUD.
 - Config model: working-week mask (Sun..Sat), vacationDays (default 10),

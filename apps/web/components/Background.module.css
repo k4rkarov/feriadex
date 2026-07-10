@@ -1,0 +1,160 @@
+.wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -1.5rem;
+  z-index: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  pointer-events: none;
+  opacity: 0.12;
+}
+
+.sun {
+  position: fixed;
+  top: 4.5rem;
+  right: 4.5rem;
+  z-index: 0;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 45%, #fde68a, #f59e0b 70%);
+  box-shadow: 0 0 34px 8px rgba(245, 158, 11, 0.35);
+  pointer-events: none;
+  opacity: 0.35;
+  animation: sunPulse 7s ease-in-out infinite;
+}
+
+:global(:root[data-theme="dark"]) .sun {
+  display: none;
+}
+
+@keyframes sunPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 30px 6px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 46px 12px rgba(245, 158, 11, 0.45);
+  }
+}
+
+/* Moon — only in dark mode, neon glow. */
+.moon {
+  display: none;
+  position: fixed;
+  top: 4.5rem;
+  right: 4.5rem;
+  z-index: 0;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 40%, #f8fafc, #cbd5e1 75%);
+  pointer-events: none;
+  opacity: 0.35;
+  animation: moonNeon 3.2s ease-in-out infinite;
+}
+
+:global(:root[data-theme="dark"]) .moon {
+  display: block;
+}
+
+@keyframes moonNeon {
+  0%,
+  100% {
+    box-shadow:
+      0 0 16px 4px rgba(165, 180, 252, 0.7),
+      0 0 40px 12px rgba(129, 140, 248, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 26px 8px rgba(165, 180, 252, 0.95),
+      0 0 66px 22px rgba(129, 140, 248, 0.65);
+  }
+}
+
+/* Scattered drifting clouds (both themes). */
+.clouds {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cloud {
+  position: absolute;
+  animation: drift var(--dur, 18s) ease-in-out infinite alternate;
+  animation-delay: var(--d, 0s);
+}
+
+.cloudSvg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.cloudFill {
+  fill: #ffffff;
+  opacity: 0.01;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.06));
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-14px);
+  }
+  to {
+    transform: translateX(14px);
+  }
+}
+
+.item {
+  flex: 0 1 auto;
+  width: min(13vw, 150px);
+  transform: scaleX(var(--flip, 1)) scale(var(--s, 1));
+  transform-origin: bottom center;
+}
+
+.palm {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.trunk {
+  fill: #a16207;
+}
+
+.frond {
+  fill: #16a34a;
+}
+
+/* Gentle sway, pivoting at the trunk top; staggered per palm via --d. */
+.crown {
+  transform-box: view-box;
+  transform-origin: 100px 108px;
+  animation: sway 5.5s ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crown,
+  .sun,
+  .moon,
+  .cloud {
+    animation: none;
+  }
+}

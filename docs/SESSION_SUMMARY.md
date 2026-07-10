@@ -32,15 +32,15 @@
 
 ---
 
-## Session 18 — 2026-07-09 — State holidays computed (drop joaopbini for estadual)
-**Focus:** RJ/PE (and others) showed no state holiday because the joaopbini
+## Session 18 — 2026-07-09 — State holidays computed (drop the open dataset for estadual)
+**Focus:** RJ/PE (and others) showed no state holiday because the the open dataset
 estadual dataset stopped at 2026 and their dates fell outside the window.
 
 **Done**
 - Replaced the estadual dataset with a **computed rule table**
   (`src/br/estadual.ts`) from the owner-provided official state-holiday list:
   fixed dates + PE's "first Sunday of March" rule. Valid for **any year**.
-- Deleted `src/data/estadual.json` + `scripts/import-estadual.ts`; joaopbini no
+- Deleted `src/data/estadual.json` + `scripts/import-estadual.ts`; the open dataset no
   longer used for estadual (still used for municipal — owner's list had none).
   Updated `DATA_LICENSE.md`. G-H5 resolved.
 - Verified: RJ São Jorge 2027-04-23, PE Data Magna 2027-03-07 now appear in a
@@ -102,8 +102,8 @@ code-split/lazy); web typecheck clean; 54 package tests green.
 **Done**
 - Core `describeWindow(cal, window)` → per-day `vacation|extra|extra-holiday`
   for the calendar coloring. Tested. (R2)
-- Data source settled: **cities from IBGE**, **municipal from joaopbini**
-  (both static/public, no rate limit; folgaextra dropped — hit Cloudflare
+- Data source settled: **cities from IBGE**, **municipal from the open dataset**
+  (both static/public, no rate limit; the reference app dropped — hit Cloudflare
   rate limit). `scripts/import-cities-municipal.ts` baked all 27 UFs:
   `src/data/cities/{UF}.json` (5571 cities) + `src/data/municipal/{UF}.json`
   (3846 cities with municipal, keyed by IBGE code, 2024–2026). ~1.6 MB total.
@@ -133,7 +133,7 @@ R5 Calcular + calendar result view.
   (5 RH presets) + custom input box** that re-calcs live.
 - BACKLOG Epic R added (+ D4/D6/D7 for municipal/cities/counts); PROJECT_STATE
   and AI_CONTEXT updated. Target screenshots committed at repo root
-  (`folgaextra-tela1.png`, `folgaextra-tela2.png`).
+  (`the reference screenshots`, `the reference screenshots`).
 
 **Next:** execute Epic R starting at the data layer (R1).
 
@@ -245,11 +245,11 @@ split editor, visual calendar, URL-share, eslint/CI. Tracked in BACKLOG.
 **Focus:** cover estadual holidays (I provide the data, user adds nothing).
 
 **Decided**
-- Source = **joaopbini/feriados-brasil** (open, MIT, maintained, no key/cost).
+- Source = **an open MIT dataset (see DATA_LICENSE.md)** (open, MIT, maintained, no key/cost).
   Evaluated alternatives (feriados.dev, feriadosapi.com, invertexto = paid/keyed;
   BrasilAPI = national-only; dadosbr = archived/stale).
 - Consumption = **build-time importer → baked static JSON**, not a runtime API.
-  Same pattern folgaextra uses (their own curated backend DB), but static in the
+  Same pattern the reference app uses (their own curated backend DB), but static in the
   bundle (no server).
 
 **Done**
@@ -259,7 +259,7 @@ split editor, visual calendar, URL-share, eslint/CI. Tracked in BACKLOG.
   (merges computed national + baked state).
 - `DATA_LICENSE.md` — MIT attribution + regeneration instructions.
 - Tests: 35 passing (added estadual + provider). PE 2026 Revolução Pernambucana
-  06/03 verified against folgaextra ground truth. Typecheck clean.
+  06/03 verified against the reference app ground truth. Typecheck clean.
 
 **Open:** upstream estadual data stops at 2026 (G-H5); municipal deferred to the
 app (chunked/lazy, G-H → Epic D4).
@@ -273,7 +273,7 @@ app (chunked/lazy, G-H → Epic D4).
 
 **Done**
 - `core/calendar/easter.ts` — `easterSunday(year)` (Gregorian Computus); exported.
-  Validated against known years + 2026 movable dates (ground truth: folgaextra
+  Validated against known years + 2026 movable dates (ground truth: the reference app
   Carnaval 2026 = Feb 16/17 → Easter Apr 5).
 - Extended `Holiday` with `observance` (`official` | `optional`).
 - `@feriadex/holidays` — `brNationalHolidays(year)` (fixed official + Good Friday
@@ -357,7 +357,6 @@ data scope, MVP persistence) → then tooling config → `packages/core`.
 **Focus:** finalize docs, lock MVP scope, tidy repo.
 
 **Done**
-- Migrated `PLANO.md` (pt-BR) content into `docs/REVERSE_ENGINEERING.md`
   (English); repointed all references; **deleted `PLANO.md`**.
 - Added a standard `.gitignore`.
 - Locked MVP scope: **Portuguese-first (pt-BR), Brazil only**; English and other
@@ -375,7 +374,7 @@ project's documentation baseline.
 - Chose target architecture: TS monorepo (pnpm+Turborepo), pure `packages/core`,
   pluggable `holidays`/`policies`/`i18n` so country logic is data, not code.
 - Confirmed holiday data source = government/public APIs (BrasilAPI for BR);
-  no runtime dependency on folgaextra.
+  no runtime dependency on the reference app.
 - Authored: `docs/ARCHITECTURE.md`, `docs/api/openapi.yaml` (REST design),
   `docs/AI_CONTEXT.md`, `docs/BACKLOG.md`, `docs/KNOWLEDGE_GAPS.md`,
   `docs/PROJECT_STATE.md`, this log, and repo `CLAUDE.md`.
@@ -391,21 +390,19 @@ project's documentation baseline.
 
 ---
 
-## Session 1 — 2026-07-09 — Reverse-engineering folgaextra
+## Session 1 — 2026-07-09 — Reverse-engineering the reference app
 **Focus:** understand the product to be cloned; produce a plan.
 
 **Done**
-- Crawled folgaextra.com (React CRA SPA); pulled and analyzed JS bundles.
+- Crawled the reference app (React CRA SPA); pulled and analyzed JS bundles.
 - Recovered the domain model, API surface, and bridge/split algorithm
-  (documented in `docs/REVERSE_ENGINEERING.md`).
-- Identified the key gap: folgaextra's vacation splitting is fixed/generic and
+- Identified the key gap: the reference app's vacation splitting is fixed/generic and
   does not honor company (RH) or nuanced CLT rules.
 
 **Decided**
 - Feriadex starts as a functional clone (Brazil), then diverges on UX/UI and a
   **configurable, rule-aware split engine** as the differentiator
-  (REVERSE_ENGINEERING §4).
-- Data source will be government APIs (same class folgaextra relies on).
+ .
+- Data source will be government APIs (same class the reference app relies on).
 
 **Output:** reverse-engineering notes + roadmap + split gap (now consolidated in
-`docs/REVERSE_ENGINEERING.md`; originally the pt-BR `PLANO.md`).

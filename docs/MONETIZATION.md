@@ -2,12 +2,12 @@
 
 > To execute **after the product is ready** (usable, some content, custom
 > domain, privacy compliance). Ads on a thin/new site get rejected and earn
-> nothing without traffic. folgaextra monetized with Google AdSense — same path
+> nothing without traffic. the reference app monetized with Google AdSense — same path
 > is viable here.
 
 ## Prerequisites (must exist before applying to any ad network)
 1. **Custom domain** (not `*.github.io`) with HTTPS.
-2. **Privacy policy** + terms pages (pt-BR). folgaextra had `/politica-privacidade`.
+2. **Privacy policy** + terms pages (pt-BR). the reference app had `/politica-privacidade`.
    Required by AdSense and by LGPD.
 3. **Cookie/consent banner (LGPD, Brazil).** Ad + analytics scripts must load
    **only after consent**. For AdSense in EEA/UK a Google-certified **CMP** is
@@ -18,7 +18,7 @@
 5. **Analytics (GA4)** to measure traffic (ads need traffic to earn).
 
 ## Ad networks (pick one to start)
-- **Google AdSense** — easiest entry, what folgaextra used. Start here.
+- **Google AdSense** — easiest entry, what the reference app used. Start here.
 - **Ezoic / Mediavine / AdThrive** — higher RPM but require traffic thresholds
   (Ezoic low, Mediavine ~50k sessions/mo). Migrate later if volume justifies.
 - **Media.net** — contextual alternative/fallback.

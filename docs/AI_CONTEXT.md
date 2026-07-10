@@ -7,7 +7,7 @@
 A vacation/holiday optimizer. Given holidays, weekends, a working-week, and a
 vacation entitlement, it finds the **best days to take off** to maximize
 consecutive rest by bridging (*emendar*) holidays and weekends. Starts as a
-functional clone of folgaextra.com (Brazil) and scales to a multi-country,
+functional Brazilian vacation optimizer (Brazil) and scales to a multi-country,
 multi-jurisdiction product.
 
 **MVP scope: Portuguese-first (pt-BR), Brazilian users only.** English and other
@@ -18,7 +18,6 @@ copy is pt-BR via the i18n layer.
 ## Document map
 | Doc | Purpose | Update cadence |
 |---|---|---|
-| `docs/REVERSE_ENGINEERING.md` | Origin: analysis of folgaextra (algorithm, data shape, split gap §4) | rarely |
 | `docs/CONVENTIONS.md` | **Rule #0** — file organization, modularity, no-inline-CSS, where-does-this-go map | rarely |
 | `docs/ARCHITECTURE.md` | Target architecture, monorepo layout, module boundaries, ADRs | on design change |
 | `docs/COMPLIANCE.md` | CLT Art. 134 + RH vacation rules → where enforced in code | on split-logic change |
@@ -43,11 +42,11 @@ copy is pt-BR via the i18n layer.
    Adding a country = adding data packs, not editing the engine or UI.
 3. **Dependency direction is one-way** (see ARCHITECTURE §4). `core` depends on
    nothing internal.
-4. **Do not depend on folgaextra's API at runtime.** Holiday data comes from
-   government/public sources. folgaextra was studied only to understand logic.
+4. **Do not depend on any third-party API at runtime.** Holiday data comes from
+   government/public sources. No third-party API is used at runtime.
 5. **Dates are day-granular and TZ-safe**, isolated behind one date utility.
 6. **The split solver is the product differentiator** — treat employer/legal
-   split rules as hard constraints, configurable and user-editable (REVERSE_ENGINEERING §4).
+   split rules as hard constraints, configurable and user-editable.
 
 ## State of the code
 **v1 working (committed "v1 done").** Monorepo with a tested `packages/core`

@@ -9,15 +9,15 @@
   a build-time static dataset; **municipal via user-added custom holidays**. No
   runtime fetch (no CORS, offline-capable). ADR #8/#11.
 - **G-H2 — RESOLVED (2026-07-09).** State (estadual) source = the open
-  MIT dataset **joaopbini/feriados-brasil**, baked at build time via
+  MIT dataset **an open MIT dataset (see DATA_LICENSE.md)**, baked at build time via
   `scripts/import-estadual.ts` into `src/data/estadual.json` (no runtime
   dependency, no key, no cost). Municipal also available upstream (deferred —
   chunked/lazy in the app). Attribution in `packages/holidays/DATA_LICENSE.md`.
 - **G-H5 — RESOLVED (2026-07-09).** State holidays are now **computed** from a
   curated rule table (`src/br/estadual.ts`, owner-provided official list; PE =
-  first Sunday of March). Valid for any year → no dataset year cap. joaopbini
+  first Sunday of March). Valid for any year → no dataset year cap. the open dataset
   dropped for estadual. (This fixed RJ/PE showing nothing in a future window.)
-- **G-H6 — Municipal names/coverage.** Municipal still comes from joaopbini
+- **G-H6 — Municipal names/coverage.** Municipal still comes from the open dataset
   (owner's list had no municipal data). Some names are generic; coverage
   partial. Enrich capitals over time (BACKLOG D8).
 - **G-H3 — Movable feasts.** Confirm which movable dates count as holidays vs
@@ -62,7 +62,7 @@
   `Intl`/CLDR or a maintained table?
 
 ## Product / legal
-- **G-L1 — Branding distance from folgaextra.** Confirm Feriadex has fully
+- **G-L1 — Branding distance from the reference app.** Confirm Feriadex has fully
   independent visual identity/copy (logic reuse is fine; design/marks are not).
-- **G-L2 — Ads/monetization** model (folgaextra used AdSense/FB pixel) — decide
+- **G-L2 — Ads/monetization** model (the reference app used AdSense/FB pixel) — decide
   if/when Feriadex monetizes; affects privacy policy + consent (GDPR/LGPD).

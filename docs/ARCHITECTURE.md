@@ -1,7 +1,7 @@
 # Feriadex — Architecture
 
 > Target architecture for a vacation/holiday optimizer that starts as a
-> Brazil-only clone of folgaextra.com and scales to a **multi-country,
+> Brazil-only Brazilian vacation optimizer and scales to a **multi-country,
 > multi-jurisdiction** product. Nothing here is built yet — this is the plan
 > the code will grow into so we don't refactor later.
 
@@ -79,7 +79,7 @@ feriadex/
 │   ├── holidays/                # providers + baked data
 │   │   ├── src/br/              # national (computed), estadual (rule table),
 │   │   │                        #   municipal (baked+curated), cities, counts, states
-│   │   ├── src/data/            # cities/{UF}.json (IBGE), municipal/{UF}.json (joaopbini)
+│   │   ├── src/data/            # cities/{UF}.json (IBGE), municipal/{UF}.json (the open dataset)
 │   │   └── scripts/             # import-cities-municipal.ts (build-time)
 │   ├── policies/                # labor-policy packs per jurisdiction
 │   │   └── src/
@@ -105,7 +105,7 @@ feriadex/
 Framework-free, pure functions. Two cooperating solvers:
 
 ### 5.1 Bridge optimizer (`bridge/`)
-Ported logic from the reverse-engineered algorithm (see REVERSE_ENGINEERING.md §2):
+Ported logic from the reverse-engineered algorithm:
 - `isWorkingDay(date, mask, holidays)` / `isHoliday(date, holidays)`
 - `getExtraDays(from, dir)` → contiguous free days (weekend + holidays)
 - `getStartDayOfVacation(from, dir)` → next/prev spendable working day
@@ -116,7 +116,7 @@ Ported logic from the reverse-engineered algorithm (see REVERSE_ENGINEERING.md �
 Given an entitlement (e.g. 30 days) and a **LaborPolicy**, enumerate *valid*
 partitions (multiset, order-independent), then for each partition place every
 block in its best bridge window **within the deadline**, maximizing total rest
-of the whole set. See BACKLOG epic "Configurable splitting" and REVERSE_ENGINEERING §4.
+of the whole set. See BACKLOG epic "Configurable splitting".
 
 Input contract:
 ```ts
@@ -171,7 +171,7 @@ necessary (e.g. company accounts, shared/persistent studies, custom presets).
 
 When that day comes: own REST API under `/api/v1`, thin handlers (Zod →
 `core`/`holidays`/`policies` → serialize), country-centric and cache-friendly.
-Never proxy or depend on folgaextra's API.
+Never proxy or depend on any third-party API.
 
 ---
 
@@ -201,7 +201,7 @@ Never proxy or depend on folgaextra's API.
 | # | Decision | Status |
 |---|---|---|
 | 1 | TS monorepo (pnpm+Turbo), pure `core` package | Accepted |
-| 2 | Next.js App Router, own `/api/v1` (no folgaextra dependency) | Accepted |
+| 2 | Next.js App Router, own `/api/v1` (no the reference app dependency) | Accepted |
 | 3 | Holidays from government/public APIs via per-country adapters | Accepted |
 | 4 | Labor rules as pluggable policy packs (CLT first) | Accepted |
 | 5 | i18n via locale routing + per-country data selection | Accepted |

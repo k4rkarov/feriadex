@@ -10,6 +10,7 @@ export const ptBR = {
 
   "footer.privacy": "Política de privacidade",
   "footer.rights": "Todos os direitos reservados.",
+  "footer.by": "Desenvolvido por",
   "privacy.title": "Política de Privacidade",
   "privacy.body":
     "O Feriadex roda inteiramente no seu navegador. Nenhum dado de férias é enviado a servidores. Esta página será detalhada antes de qualquer coleta de dados ou anúncios.",

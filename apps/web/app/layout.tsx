@@ -2,11 +2,16 @@ import type { Metadata } from "next";
 import { t } from "@feriadex/i18n";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { Background } from "../components/Background";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
   title: t("app.title"),
   description: t("app.tagline"),
+  icons: {
+    icon: "/images/icon.png",
+    apple: "/images/icon.png",
+  },
 };
 
 // Apply the saved/system theme before paint to avoid a flash.
@@ -21,7 +26,8 @@ export default function RootLayout({
     <html lang="pt-BR" suppressHydrationWarning>
       <body>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
-        <div className="mx-auto w-full max-w-4xl px-6">
+        <Background />
+        <div className="relative z-10 mx-auto w-full max-w-4xl px-6">
           <Header />
           <main>{children}</main>
           <Footer />

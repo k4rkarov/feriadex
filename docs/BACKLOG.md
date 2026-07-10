@@ -17,7 +17,7 @@
 - [x] `done` B4. Scenario unit tests (weekend bridge, mid-week/holiday-in-block, year boundary, split). 23 tests green.
 - [x] `done` B5. Efficiency metric defined & documented (`totalRestDays / workingDaysSpent`, in `types.ts`).
 
-## Epic C — Configurable splitting (P2) — *the differentiator* (REVERSE_ENGINEERING §4)
+## Epic C — Configurable splitting (P2) — *the differentiator*
 - [x] `done` C1. `SplitScheme` model (multiset, order-independent).
 - [x] `done` C2. `SplitConstraints` + `validateScheme` (main ≥14, others ≥5, ≤3 periods, sum check).
 - [x] `done` C3. BR/CLT policy pack + common RH presets (30d and 20d schemes); presets validated in tests.
@@ -31,11 +31,11 @@
 ## Epic D — Holiday data (P1) — computed, no backend
 - [x] `done` D1. `HolidayProvider` interface in `packages/holidays`.
 - [x] `done` D2. BR national + movable holidays **computed at runtime** (`brNationalHolidays`/`brProvider`) — no build step, no network, no CORS. Supersedes the JSON-dataset idea.
-- [x] `done` D3. State (regional) holidays for BR — baked from joaopbini/feriados-brasil (MIT) via `scripts/import-estadual.ts` → `brStateHolidays`/`brProviderFor`. Coverage through 2026 (G-H5).
-- [x] `done` D4. Municipal holidays baked from joaopbini per UF + lazy `brMunicipalHolidays(uf, ibge, from, to)` loader (dynamic import, code-split). (Redesign R1.2)
+- [x] `done` D3. State (regional) holidays for BR — baked from an open MIT dataset (see DATA_LICENSE.md) (MIT) via `scripts/import-estadual.ts` → `brStateHolidays`/`brProviderFor`. Coverage through 2026 (G-H5).
+- [x] `done` D4. Municipal holidays baked from the open dataset per UF + lazy `brMunicipalHolidays(uf, ibge, from, to)` loader (dynamic import, code-split). (Redesign R1.2)
 - [x] `done` D6. City list per UF from IBGE + lazy `brCities(uf)` loader. (Redesign R1.1)
 - [x] `done` D7-lib. `countHolidays(national, regional, municipal)` with level precedence/dedupe. (Redesign R1.3)
-- [ ] `todo` D8. Enrich capital municipal names from folgaextra (slow, paced), where joaopbini is generic.
+- [ ] `todo` D8. Enrich capital municipal names from the reference app (slow, paced), where the open dataset is generic.
 - [ ] `todo` D7. Holiday-count helper (national/regional/municipal) for the live counter. (Redesign R1.3)
 - [x] `done` D5. Movable feasts via Computus (see B3).
 

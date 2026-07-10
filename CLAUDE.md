@@ -7,7 +7,7 @@ does not apply here. Read `docs/AI_CONTEXT.md` before starting work.
 ## What this is
 Feriadex is a vacation/holiday optimizer: it finds the best days to take time
 off to maximize consecutive rest by bridging holidays and weekends. It begins
-as a Brazil-focused clone of folgaextra.com and is built to scale to multiple
+as a Brazil-focused Brazilian vacation optimizer and is built to scale to multiple
 countries and labor jurisdictions.
 
 ## Golden rules (do not break)
@@ -23,12 +23,12 @@ countries and labor jurisdictions.
    labor rules via `packages/policies` packs, language via `packages/i18n`.
    Adding a country = new data packs, not engine/UI edits.
 3. **One-way dependencies** (see ARCHITECTURE §4). `core` imports nothing internal.
-4. **Never depend on folgaextra's API at runtime.** Holiday data = government/
-   public sources. folgaextra was studied only to learn the algorithm.
+4. **Never depend on any third-party API at runtime.** Holiday data = government/
+   public sources. the reference app was studied only to learn the algorithm.
 5. **Dates are day-granular and timezone-safe**, behind the single date utility.
    Don't scatter `new Date()`/`Date.now()` through logic.
 6. **The split engine is the product.** Employer/legal split rules are hard
-   constraints, configurable and user-editable (REVERSE_ENGINEERING §4).
+   constraints, configurable and user-editable.
 
 ## Stack
 TypeScript · pnpm + Turborepo monorepo · **Next.js static export (SSG)** ·
@@ -76,6 +76,5 @@ Full rules + "where does this file go" map: `docs/CONVENTIONS.md`.
 - Prefer editing the doc that owns a fact over duplicating it.
 
 ## Pointers
-- `docs/REVERSE_ENGINEERING.md` — folgaextra analysis + split gap §4.
 - `docs/ARCHITECTURE.md` — the plan the code grows into.
 - `docs/AI_CONTEXT.md` — start-here map for assistants.

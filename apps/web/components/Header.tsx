@@ -8,7 +8,8 @@ const LAW_URL =
 export function Header() {
   return (
     <header className={s.header}>
-      <span className={s.title}>{t("app.title")}</span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img className={s.logo} src="/images/logo.png" alt={t("app.title")} />
       <div className={s.actions}>
         <a
           className={s.law}

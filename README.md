@@ -79,6 +79,6 @@ Start with [`docs/AI_CONTEXT.md`](docs/AI_CONTEXT.md). Key docs:
 - **National + facultativo** holidays: computed (fixed dates + Gregorian
   Computus for movable feasts). Any year.
 - **State**: computed from a curated rule table (`packages/holidays/src/br/estadual.ts`).
-- **Cities**: IBGE municipality list (baked). **Municipal holidays**:
-  joaopbini/feriados-brasil (baked, MIT) + curated capitals. Attribution in
+- **Cities**: IBGE municipality list (baked). **Municipal holidays**: baked from
+  an open MIT dataset + curated cities. Attribution in
   [`packages/holidays/DATA_LICENSE.md`](packages/holidays/DATA_LICENSE.md).
