@@ -3,14 +3,15 @@ import { t } from "@feriadex/i18n";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Background } from "../components/Background";
+import { asset } from "../lib/asset";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
   title: t("app.title"),
   description: t("app.tagline"),
   icons: {
-    icon: "/images/icon.png",
-    apple: "/images/icon.png",
+    icon: asset("/images/icon.png"),
+    apple: asset("/images/icon.png"),
   },
 };
 

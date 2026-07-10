@@ -1,5 +1,6 @@
 import { t } from "@feriadex/i18n";
 import { ThemeToggle } from "./ThemeToggle";
+import { asset } from "../lib/asset";
 import s from "./Header.module.css";
 
 const LAW_URL =
@@ -9,7 +10,11 @@ export function Header() {
   return (
     <header className={s.header}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className={s.logo} src="/images/logo.png" alt={t("app.title")} />
+      <img
+        className={s.logo}
+        src={asset("/images/logo.png")}
+        alt={t("app.title")}
+      />
       <div className={s.actions}>
         <a
           className={s.law}

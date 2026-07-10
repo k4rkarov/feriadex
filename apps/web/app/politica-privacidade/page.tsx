@@ -1,4 +1,5 @@
 import { t } from "@feriadex/i18n";
+import { asset } from "../../lib/asset";
 
 export const metadata = { title: `${t("privacy.title")} · ${t("app.title")}` };
 
@@ -10,7 +11,7 @@ export default function PrivacyPage() {
         {t("privacy.body")}
       </p>
       <p className="mt-6">
-        <a className="text-accent" href="/">
+        <a className="text-accent" href={asset("/")}>
           ← {t("app.title")}
         </a>
       </p>

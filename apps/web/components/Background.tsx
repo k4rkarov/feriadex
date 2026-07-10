@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { asset } from "../lib/asset";
 import s from "./Background.module.css";
 
 const FRONDS = [-78, -40, -8, 26, 62, 96];
@@ -70,6 +71,11 @@ function Palm() {
 export function Background() {
   return (
     <>
+      <div
+        className={s.wallpaper}
+        aria-hidden="true"
+        style={{ backgroundImage: `url(${asset("/images/wallpaper.png")})` }}
+      />
       <div className={s.sun} aria-hidden="true" />
       <div className={s.moon} aria-hidden="true" />
       <div className={s.clouds} aria-hidden="true">

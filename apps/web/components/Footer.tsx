@@ -1,10 +1,11 @@
 import { t } from "@feriadex/i18n";
+import { asset } from "../lib/asset";
 import s from "./Footer.module.css";
 
 export function Footer() {
   return (
     <footer className={s.footer}>
-      <a className={s.link} href="/politica-privacidade">
+      <a className={s.link} href={asset("/politica-privacidade")}>
         {t("footer.privacy")}
       </a>
       <span className={s.copy}>
