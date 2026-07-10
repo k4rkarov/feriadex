@@ -138,6 +138,22 @@ export function Optimizer() {
 
   const noFit = Boolean(config && sets && !periods);
 
+  // date → holiday name, for the clickable calendar days.
+  const holidayNames = useMemo(() => {
+    const m = new Map<string, string>();
+    if (sets) {
+      for (const h of [
+        ...sets.national,
+        ...sets.regional,
+        ...sets.municipal,
+        ...sets.facultative,
+      ]) {
+        if (!m.has(h.date)) m.set(h.date, h.name);
+      }
+    }
+    return m;
+  }, [sets]);
+
   return (
     <section className={s.wrap}>
       <div className={s.controls}>
@@ -155,7 +171,7 @@ export function Optimizer() {
           </div>
         </div>
 
-        <label className={s.field}>
+        <div className={s.field}>
           <span>
             {t("form.state")}
             <InfoTip text={t("form.state.info")} />
@@ -168,9 +184,9 @@ export function Optimizer() {
               ...BR_STATES.map((st) => ({ value: st.uf, label: st.name })),
             ]}
           />
-        </label>
+        </div>
 
-        <label className={s.field}>
+        <div className={s.field}>
           <span>
             {t("form.city")}
             <InfoTip text={t("form.city.info")} />
@@ -183,7 +199,7 @@ export function Optimizer() {
               ...cities.map((c) => ({ value: String(c.ibge), label: c.name })),
             ]}
           />
-        </label>
+        </div>
       </div>
 
       {lists && (
@@ -243,7 +259,11 @@ export function Optimizer() {
         />
         {noFit && <p className={s.error}>{t("result.noFit")}</p>}
         {periods && schemeData && (
-          <CalendarView periods={periods} cal={schemeData.cal} />
+          <CalendarView
+            periods={periods}
+            cal={schemeData.cal}
+            names={holidayNames}
+          />
         )}
       </div>
     </section>

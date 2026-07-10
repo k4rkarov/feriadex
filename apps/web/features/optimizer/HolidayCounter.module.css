@@ -19,7 +19,17 @@
 
 @media (max-width: 640px) {
   .chips {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .chip,
+  .chipActive {
+    display: flex;
+    align-items: center;
     justify-content: center;
+    gap: 0.3rem;
+    width: 100%;
   }
 }
 

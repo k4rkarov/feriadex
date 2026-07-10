@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   addDays,
   dayOfWeek,
@@ -33,11 +33,14 @@ function monthsBetween(from: string, to: string): string[] {
 export function CalendarView({
   periods,
   cal,
+  names,
 }: {
   periods: PeriodOptions[];
   cal: Calendar;
+  names: Map<string, string>;
 }) {
   const [activePeriod, setActivePeriod] = useState(0);
+  const [openDay, setOpenDay] = useState<string | null>(null);
   const [sel, setSel] = useState<number[]>(() => periods.map(() => 0));
 
   // Reset selections when the periods change (identity is memoized upstream).
@@ -140,13 +143,31 @@ export function CalendarView({
         </span>
       </div>
 
-      <Months block={win} cal={cal} />
+      <Months
+        block={win}
+        cal={cal}
+        names={names}
+        openDay={openDay}
+        onToggle={(d) => setOpenDay((cur) => (cur === d ? null : d))}
+      />
       <Legend />
     </div>
   );
 }
 
-function Months({ block, cal }: { block: VacationWindow; cal: Calendar }) {
+interface DayProps {
+  names: Map<string, string>;
+  openDay: string | null;
+  onToggle: (date: string) => void;
+}
+
+function Months({
+  block,
+  cal,
+  names,
+  openDay,
+  onToggle,
+}: { block: VacationWindow; cal: Calendar } & DayProps) {
   const marks = new Map<string, DayKind>(
     describeWindow(cal, block).map((m) => [m.date, m.kind]),
   );
@@ -155,13 +176,26 @@ function Months({ block, cal }: { block: VacationWindow; cal: Calendar }) {
   return (
     <div className={s.months}>
       {monthsBetween(first, last).map((ym) => (
-        <Month key={ym} ym={ym} marks={marks} />
+        <Month
+          key={ym}
+          ym={ym}
+          marks={marks}
+          names={names}
+          openDay={openDay}
+          onToggle={onToggle}
+        />
       ))}
     </div>
   );
 }
 
-function Month({ ym, marks }: { ym: string; marks: Map<string, DayKind> }) {
+function Month({
+  ym,
+  marks,
+  names,
+  openDay,
+  onToggle,
+}: { ym: string; marks: Map<string, DayKind> } & DayProps) {
   const [year, month] = ym.split("-").map(Number) as [number, number];
   const daysInMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
   const firstWeekday = dayOfWeek(`${ym}-01`);
@@ -180,26 +214,60 @@ function Month({ ym, marks }: { ym: string; marks: Map<string, DayKind> }) {
             {t(`weekday.${w}` as MessageKey)}
           </div>
         ))}
-        {cells.map((iso, i) =>
-          iso === null ? (
-            <div key={`e${i}`} className={s.empty} />
-          ) : (
-            <div
+        {cells.map((iso, i) => {
+          if (iso === null) return <div key={`e${i}`} className={s.empty} />;
+          const cls = [
+            s.day,
+            dayOfWeek(iso) === 0 || dayOfWeek(iso) === 6 ? s.weekend : "",
+            kindClass(marks.get(iso), s),
+          ]
+            .filter(Boolean)
+            .join(" ");
+          const name = names.get(iso);
+          const num = Number(iso.slice(-2));
+          if (!name) {
+            return (
+              <div key={iso} className={cls}>
+                {num}
+              </div>
+            );
+          }
+          return (
+            <button
               key={iso}
-              className={[
-                s.day,
-                dayOfWeek(iso) === 0 || dayOfWeek(iso) === 6 ? s.weekend : "",
-                kindClass(marks.get(iso), s),
-              ]
-                .filter(Boolean)
-                .join(" ")}
+              type="button"
+              className={`${cls} ${s.dayBtn}`}
+              onClick={() => onToggle(iso)}
             >
-              {Number(iso.slice(-2))}
-            </div>
-          ),
-        )}
+              {num}
+              {openDay === iso && <Balloon text={name} />}
+            </button>
+          );
+        })}
       </div>
     </div>
+  );
+}
+
+function Balloon({ text }: { text: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  // Nudge horizontally so the balloon stays inside the viewport at edges.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.transform = "translateX(-50%)";
+    const r = el.getBoundingClientRect();
+    const m = 8;
+    if (r.right > window.innerWidth - m) {
+      el.style.transform = `translateX(calc(-50% - ${Math.ceil(r.right - window.innerWidth + m)}px))`;
+    } else if (r.left < m) {
+      el.style.transform = `translateX(calc(-50% + ${Math.ceil(m - r.left)}px))`;
+    }
+  }, [text]);
+  return (
+    <span className={s.balloon} ref={ref}>
+      {text}
+    </span>
   );
 }
 

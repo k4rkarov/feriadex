@@ -9,6 +9,12 @@
   gap: 0.4rem;
 }
 
+@media (max-width: 640px) {
+  .tabs {
+    justify-content: center;
+  }
+}
+
 .tab,
 .tabActive {
   display: inline-flex;

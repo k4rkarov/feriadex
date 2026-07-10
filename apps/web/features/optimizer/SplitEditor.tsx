@@ -90,7 +90,7 @@ export function SplitEditor({
   return (
     <div className={s.editor}>
       <div className={s.row}>
-        <label className={`${s.field} ${s.num}`}>
+        <div className={`${s.field} ${s.num}`}>
           <span>
             {t("split.entitlement")}
             <InfoTip text={t("split.entitlement.info")} />
@@ -109,7 +109,7 @@ export function SplitEditor({
               <option value="other">{t("split.availOther")}</option>
             </select>
           )}
-        </label>
+        </div>
 
         {otherMode && !allowCustom && (
           <label className={`${s.field} ${s.num}`}>
@@ -123,7 +123,7 @@ export function SplitEditor({
           </label>
         )}
 
-        <label className={`${s.field} ${s.num}`}>
+        <div className={`${s.field} ${s.num}`}>
           <span>
             {t("split.banco")}
             <InfoTip text={t("split.banco.info")} />
@@ -134,7 +134,7 @@ export function SplitEditor({
             value={bancoText}
             onChange={(e) => setBancoText(e.target.value)}
           />
-        </label>
+        </div>
 
         <div className={s.field}>
           <span>
