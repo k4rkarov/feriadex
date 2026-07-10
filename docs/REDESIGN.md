@@ -1,5 +1,10 @@
 # Redesign v1 — UX overhaul from first user test (2026-07-09)
 
+> **STATUS: DONE (v1 committed).** All phases R1–R5 shipped, plus extra rounds
+> of feedback (regime toggle, free block builder, facultativo category, ranked
+> partitions, per-year month tabs, badges, numeric-input & freeze fixes). This
+> doc is kept as the original spec/record; current state is in PROJECT_STATE.
+
 > Spec + action plan for reworking the app after the first hands-on test.
 > Target reference: the folgaextra screenshots committed at repo root
 > (`folgaextra-tela1.png` = input form, `folgaextra-tela2.png` = calendar

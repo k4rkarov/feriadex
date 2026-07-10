@@ -38,6 +38,15 @@
   it interacts with min-block sizes across schemes.
 
 ## Algorithm
+- **G-A3 — Period overlap.** Each period's month options are chosen
+  independently, so two periods can pick the same month and overlap. The
+  `Máx. possível` badge sums each period's best window independently → an upper
+  estimate, not guaranteed simultaneously achievable. Deferred (owner OK'd).
+- **G-A4 — Facultativos as a level.** Carnaval (seg/ter), Quarta de Cinzas and
+  Corpus Christi are modeled as a 4th "facultativo" bucket, counted as days off
+  by default (owner decision), each user-uncheckable. Strict-legal mode (only
+  where a municipal/estadual law makes them holidays) was declined.
+
 - **G-A1 — Efficiency definition edge cases.** How to rank ties, and whether
   "extra days" counts only future free days or also the weekend before the
   start. Reverse-engineered logic gives a base; needs product decision.

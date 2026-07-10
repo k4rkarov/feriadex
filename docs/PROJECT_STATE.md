@@ -4,13 +4,27 @@
 > Last updated: 2026-07-09.
 
 ## Phase
-**Phase 2 — Redesign v1 (DONE).** Epic R complete (R1–R5): city + municipal
-data (IBGE + joaopbini, lazy per-UF), calendar result view, theme toggle,
-wider layout, header info button, footer, form cleanup, scheme tabs + custom
-with auto re-calc. See `docs/REDESIGN.md`. Remaining is polish (R6: shadcn,
-share via URL), deploy (Epic I), monetization (Epic J, deferred).
+**v1 UI complete (committed: "v1 done").** Engine + data + compliance + full
+front-end. 60 tests green; `next build` static export clean (~103 KB first load).
 
-**Phase 1 (engine + data + compliance) done.** Monorepo tooling live. Three
+Working app (`apps/web`):
+- **Regime toggle** (CLT on/off = free), searchable accent-insensitive **state
+  + city** dropdowns (`SearchSelect`), working-week picker, custom period.
+- **Holiday counter**, 4 levels — national / regional / municipal /
+  **facultativo** — clickable to list dates; per-day checkboxes (+ "Todos" per
+  category) to exclude days you'll work; facultativos carry a short description.
+- **Split**: CLT → all law-valid partitions ranked as tabs (`SchemeTabs`);
+  free → block-stepper builder; **banco de horas** as an extra block.
+- **Result**: period tabs → best-window-per-month sub-tabs (grouped by year) →
+  colored month calendar (`CalendarView`), with `Dias extras` (red) and
+  `Máx. possível` (green) badges. Two-color numbers (férias azul / extra
+  vermelho).
+- Theme toggle (system default, slider), header law link (Lei 13.467/2017),
+  footer + privacy page.
+
+Remaining: deploy (Epic I — GitHub Pages/CDN), share via URL (E4), shadcn
+polish (E5), eslint/CI (A2/A3), monetization (Epic J, deferred), overlap
+handling between periods (known gap). Monorepo tooling live. Three
 packages built and **fully tested (31 tests green, typecheck clean)**:
 - `@feriadex/core` — date utils, Computus (`easterSunday`), calendar, bridge
   optimizer (`evaluateWindow`/`optimizeSingleBlock`), split validation +
@@ -80,17 +94,18 @@ green**. Run tests: `corepack pnpm test`; run app: `corepack pnpm --filter web d
 - Deadline/concessive-period input contract (G-P2).
 - Whether Region→City model generalizes internationally (G-I1; future).
 
-## Next steps (in order) — Redesign v1 (docs/REDESIGN.md)
-1. **R1 data:** city list per UF (IBGE) + municipal holidays (bake joaopbini,
-   lazy) + holiday-count helper. (D6/D4/D7)
-2. **R2:** `describeWindow` core helper for calendar coloring.
-3. **R3 chrome:** theme toggle (system default), wider/bigger layout, header
-   info button → law link, footer (privacy + copyright).
-4. **R4 form:** city dropdown + live holiday counter; drop include-optional and
-   "Dias de férias"; entitlement default 30.
-5. **R5:** scheme tabs + custom input → "Calcular" → calendar result; drop top-5.
-6. **R6 polish:** shadcn, share via URL (E4/E5).
-(Done: Epic A/B/C/D1–D3, first shell UI.)
+## Next steps (in order)
+1. **Deploy** — GitHub Actions → Pages (`.nojekyll`) + custom domain, or
+   Cloudflare/Vercel. (Epic I)
+2. **Share via URL** — serialize the study into the URL + localStorage. (E4)
+3. **Overlap between periods** — prevent/flag two periods picking the same month
+   (currently independent; the `Máx. possível` badge is an upper estimate).
+4. **Polish** — shadcn components, empty/error states (E5); eslint/prettier + CI (A2/A3).
+5. **Monetization** (deferred) — privacy policy, LGPD consent, AdSense. (Epic J,
+   `docs/MONETIZATION.md`)
+6. **Data** — enrich municipal capital names; extend estadual coverage as needed.
+
+(Done: engine + data + compliance + full redesign UI — see SESSION_SUMMARY.)
 
 ## Known reference facts (from reverse-engineering, for reuse)
 - folgaextra API shape (studied, not consumed): `service.php?type=state|city`,

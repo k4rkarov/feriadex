@@ -60,27 +60,27 @@
 ```
 feriadex/
 ├── apps/
-│   └── web/                     # Next.js app: UI pages + /api route handlers
-│       ├── app/
-│       │   ├── [locale]/        # locale-routed pages (i18n)
-│       │   └── api/v1/          # thin route handlers → call packages/core
-│       ├── features/            # feature modules (own components/hooks/*.module.css)
-│       ├── components/          # app-level shared components
-│       ├── lib/                 # app-only helpers
-│       ├── styles/              # globals.css: reset + design-token variables
-│       └── public/              # static assets
+│   └── web/                     # Next.js static-export app (no server)
+│       ├── app/                 # layout, page, /politica-privacidade
+│       ├── components/          # shared: Header, Footer, ThemeToggle, Toggle,
+│       │                        #   InfoTip, SearchSelect (+ .module.css each)
+│       ├── features/optimizer/  # Optimizer, SplitEditor, SchemeTabs,
+│       │                        #   CalendarView, HolidayCounter,
+│       │                        #   WorkingWeekPicker, model.ts (+ CSS modules)
+│       └── styles/globals.css   # reset + design-token variables + color-scheme
 ├── packages/
-│   ├── core/                    # PURE engine: bridge optimizer + split solver
+│   ├── core/                    # PURE engine (no I/O, no deps)
 │   │   ├── src/
-│   │   │   ├── calendar/        # working-day / holiday predicates, date utils
-│   │   │   ├── bridge/          # calculateBestDay, getExtraDays, ranking
-│   │   │   ├── split/           # split-scheme solver (valid partitions)
-│   │   │   └── types.ts
+│   │   │   ├── calendar/        # date utils, calendar, easter (Computus), start-rule
+│   │   │   ├── bridge/          # evaluate, optimize (rank by efficiency), describe
+│   │   │   ├── split/           # scheme + validate, partitions, solve/bestSplit
+│   │   │   └── types.ts         # Holiday, VacationWindow
 │   │   └── test/                # deterministic scenario tests
-│   ├── holidays/                # provider abstraction + country adapters
-│   │   └── src/
-│   │       ├── provider.ts      # HolidayProvider interface
-│   │       └── adapters/br/     # BrasilAPI adapter (national+state+municipal)
+│   ├── holidays/                # providers + baked data
+│   │   ├── src/br/              # national (computed), estadual (rule table),
+│   │   │                        #   municipal (baked+curated), cities, counts, states
+│   │   ├── src/data/            # cities/{UF}.json (IBGE), municipal/{UF}.json (joaopbini)
+│   │   └── scripts/             # import-cities-municipal.ts (build-time)
 │   ├── policies/                # labor-policy packs per jurisdiction
 │   │   └── src/
 │   │       ├── policy.ts        # LaborPolicy interface + SplitScheme model

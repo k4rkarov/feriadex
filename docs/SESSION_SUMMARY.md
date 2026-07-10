@@ -5,6 +5,33 @@
 
 ---
 
+## Session 19 — 2026-07-09 — UI iteration → v1 done (committed)
+**Focus:** many rounds of UX feedback turning the shell into a finished v1.
+
+**Highlights**
+- **Regime:** replaced CLT/PJ dropdown with a **"Regime CLT" slider toggle**
+  (on = law rules; off = free mode). PJ has no real vacation rules — free mode.
+- **Free split builder:** stepper for block count + one field per block + live
+  total + "Equilibrar" (replaced the raw comma text input).
+- **CLT split:** rule-driven — all valid partitions (one ≥14, others ≥5) ranked
+  by best rest, top-6 + "ver todas" (`SchemeTabs`), inline beside "Dividir em".
+- **Result:** period tabs → best-window-per-month sub-tabs grouped by year
+  (side by side) → colored calendar; `Dias extras` (red) + `Máx. possível`
+  (green) badges; two-color numbers (férias azul / extra vermelho).
+- **Holiday counter:** 4th category **Facultativos** (Carnaval seg/ter, Quarta
+  de Cinzas, Corpus Christi) with descriptions; per-day checkboxes + "Todos".
+- **Data fixes:** national count deduped to the real 12-month window (was 28 →
+  13); estadual recomputed from a curated rule table (RJ/PE now show); curated
+  municipal: Recife São João, Rio São Sebastião, SP Aniversário.
+- **Fixes:** numeric inputs use text state (can be emptied); `periodOptions`
+  loop bug (PJ maxPeriods huge → Firefox freeze) capped; hydration warning
+  suppressed on `<html>`; searchable accent-insensitive `SearchSelect`; theme
+  `color-scheme` for native controls; SVG icons (no emoji) for law/theme.
+
+**State:** 60 tests green; `next build` clean. Committed as **"v1 done"**.
+
+---
+
 ## Session 18 — 2026-07-09 — State holidays computed (drop joaopbini for estadual)
 **Focus:** RJ/PE (and others) showed no state holiday because the joaopbini
 estadual dataset stopped at 2026 and their dates fell outside the window.

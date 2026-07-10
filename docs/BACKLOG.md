@@ -54,8 +54,8 @@
 - [x] `done` R5.3 `CalendarView` month-grid (azul/roxo/vermelho legend, Início/Retorno/Extras/Total per block).
 - [x] `done` R5.4 Removed the top-5 single-window list (`PlanView`).
 
-## Epic E — Web app / MVP UI (P1)
-- [ ] `wip`  E1. Input form: state, vacation days, **working-week picker, custom period, include-optional toggle** done; city, sell-back **todo**.
+## Epic E — Web app / MVP UI (P1) — v1 done (bar E4/E5)
+- [x] `done` E1. Input form: regime toggle, searchable state + city, working-week, custom period, banco de horas, available-days.
 - [x] `done` E2. Split picker: preset dropdown **+ custom editor with live CLT validation** (`SplitEditor`) → `solveSplit`. (fulfils C6)
 - [x] `done` E3. Result view: **visual calendar** (`CalendarView`) per block with color legend + Início/Retorno/Extras/Total.
 - [ ] `todo` E4. Shareable study via URL-encoded state; localStorage recents.

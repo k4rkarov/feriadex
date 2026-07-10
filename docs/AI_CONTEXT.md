@@ -50,8 +50,12 @@ copy is pt-BR via the i18n layer.
    split rules as hard constraints, configurable and user-editable (REVERSE_ENGINEERING §4).
 
 ## State of the code
-No application code yet. Repo currently holds `README.md` and the docs above.
-Next build step is `packages/core` (see BACKLOG / PROJECT_STATE).
+**v1 working (committed "v1 done").** Monorepo with a tested `packages/core`
+engine, `packages/holidays` (computed national/state/facultativo + baked
+cities/municipal), `packages/policies` (CLT + free), `packages/i18n`, and a full
+`apps/web` Next.js static-export UI. 60 tests green. Current snapshot +
+remaining work in `PROJECT_STATE.md`; latest changes in `SESSION_SUMMARY.md`.
+Run: `corepack pnpm test`, `corepack pnpm --filter web dev`.
 
 ## How to work here
 - Before designing, read `PROJECT_STATE.md` (where we are) + relevant doc.
