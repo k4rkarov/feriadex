@@ -1,5 +1,6 @@
 import type { WorkingWeek } from "@feriadex/core";
 import { t, type MessageKey } from "@feriadex/i18n";
+import { InfoTip } from "../../components/InfoTip";
 import s from "./WorkingWeekPicker.module.css";
 
 export function WorkingWeekPicker({
@@ -17,7 +18,10 @@ export function WorkingWeekPicker({
 
   return (
     <fieldset className={s.group}>
-      <legend className={s.legend}>{t("form.workingWeek")}</legend>
+      <legend className={s.legend}>
+        {t("form.workingWeek")}
+        <InfoTip text={t("form.workingWeek.info")} />
+      </legend>
       <div className={s.days}>
         {value.map((on, i) => (
           <button

@@ -13,10 +13,13 @@
   `scripts/import-estadual.ts` into `src/data/estadual.json` (no runtime
   dependency, no key, no cost). Municipal also available upstream (deferred —
   chunked/lazy in the app). Attribution in `packages/holidays/DATA_LICENSE.md`.
-- **G-H5 — State data year coverage.** Upstream publishes estadual holidays only
-  through **2026** right now. 12-month-ahead planning from late 2026 will lack
-  state data for 2027. Mitigation: national is always computed; re-run the
-  importer when upstream adds years. Consider a fallback/notice in the UI.
+- **G-H5 — RESOLVED (2026-07-09).** State holidays are now **computed** from a
+  curated rule table (`src/br/estadual.ts`, owner-provided official list; PE =
+  first Sunday of March). Valid for any year → no dataset year cap. joaopbini
+  dropped for estadual. (This fixed RJ/PE showing nothing in a future window.)
+- **G-H6 — Municipal names/coverage.** Municipal still comes from joaopbini
+  (owner's list had no municipal data). Some names are generic; coverage
+  partial. Enrich capitals over time (BACKLOG D8).
 - **G-H3 — Movable feasts.** Confirm which movable dates count as holidays vs
   optional points (Carnaval Mon/Tue, Ash Wednesday half-day, Corpus Christi).
   Regional variation exists. Computus handles the math; the *classification*

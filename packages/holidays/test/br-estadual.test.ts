@@ -1,32 +1,42 @@
 import { describe, expect, it } from "vitest";
-import { brStateHolidays, stateHolidayCoverage } from "../src/br/estadual";
+import { brStateHolidays } from "../src/br/estadual";
 import { brProviderFor } from "../src/br/provider";
 
-describe("brStateHolidays", () => {
-  it("returns PE state holidays for 2026 (ground truth from folgaextra)", () => {
-    const pe = brStateHolidays("PE", 2026);
-    const byDate = new Map(pe.map((h) => [h.date, h.name]));
-    expect(byDate.get("2026-03-06")).toBe("Revolução Pernambucana");
-    expect(pe.every((h) => h.level === "regional")).toBe(true);
+describe("brStateHolidays (computed, any year)", () => {
+  it("computes RJ São Jorge for any year (incl. 2027)", () => {
+    const rj = brStateHolidays("RJ", 2027);
+    expect(rj).toEqual([
+      {
+        date: "2027-04-23",
+        name: "Dia de São Jorge",
+        level: "regional",
+        observance: "official",
+      },
+    ]);
   });
 
-  it("filters by UF and year", () => {
-    expect(brStateHolidays("PE", 2026).every((h) => h.date.startsWith("2026"))).toBe(true);
-    expect(brStateHolidays("ZZ", 2026)).toHaveLength(0); // unknown UF
+  it("computes PE Data Magna as the first Sunday of March", () => {
+    // 2026-03-01 is a Sunday → first Sunday of March 2026.
+    expect(brStateHolidays("PE", 2026)[0]?.date).toBe("2026-03-01");
+    // 2027-03-07 is the first Sunday of March 2027.
+    expect(brStateHolidays("PE", 2027)[0]?.date).toBe("2027-03-07");
   });
 
-  it("reports coverage bounded by the baked dataset", () => {
-    const c = stateHolidayCoverage();
-    expect(c.fromYear).toBeLessThanOrEqual(2026);
-    expect(c.toYear).toBeGreaterThanOrEqual(2026);
+  it("returns [] for states with no fixed state holiday (ES, MT, PR)", () => {
+    expect(brStateHolidays("ES", 2026)).toEqual([]);
+    expect(brStateHolidays("MT", 2026)).toEqual([]);
+    expect(brStateHolidays("PR", 2026)).toEqual([]);
+  });
+
+  it("returns [] for an unknown UF", () => {
+    expect(brStateHolidays("ZZ", 2026)).toEqual([]);
   });
 });
 
 describe("brProviderFor", () => {
-  it("merges national (computed) with state (baked) holidays", () => {
-    const hs = brProviderFor("PE").holidays(2026, 2026);
-    // National computed (Natal) + state baked (Revolução Pernambucana).
-    expect(hs.some((h) => h.date === "2026-12-25" && h.level === "national")).toBe(true);
-    expect(hs.some((h) => h.date === "2026-03-06" && h.level === "regional")).toBe(true);
+  it("merges national (computed) with state (computed) holidays", () => {
+    const hs = brProviderFor("RJ").holidays(2027, 2027);
+    expect(hs.some((h) => h.date === "2027-12-25" && h.level === "national")).toBe(true);
+    expect(hs.some((h) => h.date === "2027-04-23" && h.level === "regional")).toBe(true);
   });
 });

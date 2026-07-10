@@ -1,0 +1,33 @@
+.track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 2.9rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.track[data-on="true"] {
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
+  border-color: var(--accent);
+}
+
+.knob {
+  position: absolute;
+  left: 0.15rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: left 0.18s ease;
+}
+
+.track[data-on="true"] .knob {
+  left: calc(100% - 1.35rem);
+}

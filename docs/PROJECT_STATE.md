@@ -4,7 +4,13 @@
 > Last updated: 2026-07-09.
 
 ## Phase
-**Phase 2 — App shell + first UI (in progress).** Phase 1 (engine + data) done. Monorepo tooling live. Three
+**Phase 2 — Redesign v1 (DONE).** Epic R complete (R1–R5): city + municipal
+data (IBGE + joaopbini, lazy per-UF), calendar result view, theme toggle,
+wider layout, header info button, footer, form cleanup, scheme tabs + custom
+with auto re-calc. See `docs/REDESIGN.md`. Remaining is polish (R6: shadcn,
+share via URL), deploy (Epic I), monetization (Epic J, deferred).
+
+**Phase 1 (engine + data + compliance) done.** Monorepo tooling live. Three
 packages built and **fully tested (31 tests green, typecheck clean)**:
 - `@feriadex/core` — date utils, Computus (`easterSunday`), calendar, bridge
   optimizer (`evaluateWindow`/`optimizeSingleBlock`), split validation +
@@ -74,14 +80,17 @@ green**. Run tests: `corepack pnpm test`; run app: `corepack pnpm --filter web d
 - Deadline/concessive-period input contract (G-P2).
 - Whether Region→City model generalizes internationally (G-I1; future).
 
-## Next steps (in order)
-1. ~~Engine + data + policy pack (Epic A/B/C1–C3/D1–D3).~~ **Done.**
-2. ~~App shell + first UI (Next static export, optimizer + CLT split).~~ **Done.**
-3. Flesh out the form: working-week, custom period, sell-back (E1); custom
-   split editor with live CLT validation (E2/C6).
-4. Visual calendar for results (E3); URL-encoded shareable study + localStorage (E4).
-5. shadcn/ui components + polish (E5); eslint/prettier + CI (A2/A3).
-6. Municipal holidays: chunk per-UF + lazy-load (D4).
+## Next steps (in order) — Redesign v1 (docs/REDESIGN.md)
+1. **R1 data:** city list per UF (IBGE) + municipal holidays (bake joaopbini,
+   lazy) + holiday-count helper. (D6/D4/D7)
+2. **R2:** `describeWindow` core helper for calendar coloring.
+3. **R3 chrome:** theme toggle (system default), wider/bigger layout, header
+   info button → law link, footer (privacy + copyright).
+4. **R4 form:** city dropdown + live holiday counter; drop include-optional and
+   "Dias de férias"; entitlement default 30.
+5. **R5:** scheme tabs + custom input → "Calcular" → calendar result; drop top-5.
+6. **R6 polish:** shadcn, share via URL (E4/E5).
+(Done: Epic A/B/C/D1–D3, first shell UI.)
 
 ## Known reference facts (from reverse-engineering, for reuse)
 - folgaextra API shape (studied, not consumed): `service.php?type=state|city`,

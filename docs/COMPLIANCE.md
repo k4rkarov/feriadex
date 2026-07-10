@@ -22,7 +22,9 @@ enforced in code. Keep this in sync when the split logic changes.
 | Vacation starts on a **working day** | CLT Art. 134 §3 (implied) | `isAllowedStart` (rejects rest-day starts) | ✅ |
 | Must **finish before the deadline** (período concessivo) | CLT / RH | `to` field is the deadline (labeled + hinted); all blocks placed within `[from, to]`; a block that cannot fit surfaces a "não cabe no prazo" error | ✅ |
 | **Whole period scheduled together** (not piecemeal) | RH | `solveSplit` resolves the entire scheme in one pass | ✅ |
-| **Abono pecuniário** — sell up to 1/3 (e.g. 30→20) | CLT Art. 143 | `maxSellBackDays(policy, entitlement)` + `SplitEditor` entitlement/sell-back inputs (capped, derives scheduled days); PJ = no sell-back | ✅ |
+| **Abono pecuniário** — sell up to 1/3 (e.g. 30→20) | CLT Art. 143 | Now **implicit**: the user enters "Dias disponíveis" (net of any abono). `maxSellBackDays` still exists in the policy for future explicit UI. | ✅ (implicit) |
+| **Split into N periods** | CLT §1 / RH | "Dividir em" (max 3 for CLT); `bestSplit` enumerates valid partitions and picks the most rest. PJ also gets a free "monte o seu" custom input. | ✅ |
+| **Half-day points not counted** | — | Quarta-feira de Cinzas (until 14h) is excluded — not a full day off. | ✅ |
 
 All CLT Art. 134 + RH rules and the abono are now enforced. Remaining polish is
 UX, not compliance.

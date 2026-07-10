@@ -1,0 +1,239 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.dot {
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-right: 0.15rem;
+}
+
+.periodTabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.badges {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.extrasBadge,
+.maxBadge {
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.extrasBadge {
+  background: #ef4444;
+}
+
+.maxBadge {
+  background: #16a34a;
+}
+
+.period,
+.periodActive {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--fg);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.periodActive {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.period em,
+.periodActive em {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 0.75rem;
+  color: var(--muted);
+  background: color-mix(in srgb, var(--fg) 8%, transparent);
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+}
+
+.optionTabs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.yearGroup {
+  flex: 1 1 12rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+}
+
+.yearLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.03em;
+}
+
+.numFerias {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.numExtra {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* Compact 2-column grid so each year group stays narrow and the groups sit
+   side by side; extra months wrap downward within the group. */
+.monthTabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(6rem, 1fr));
+  gap: 0.35rem;
+}
+
+.opt,
+.optActive {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.optActive {
+  border-color: var(--accent);
+  color: var(--fg);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.opt em,
+.optActive em {
+  font-style: normal;
+  font-weight: 700;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius, 12px);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.summary strong {
+  color: var(--fg);
+}
+
+.months {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.month {
+  min-width: 15rem;
+  flex: 1;
+}
+
+.monthLabel {
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.dow {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+  padding-bottom: 0.15rem;
+}
+
+.day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--fg) 5%, transparent);
+}
+
+.empty {
+  aspect-ratio: 1;
+}
+
+/* Weekend gets a subtle tint (kind colors below override it when set). */
+.weekend {
+  background: color-mix(in srgb, var(--fg) 11%, transparent);
+}
+
+/* Kind colors declared AFTER .day/.weekend so they win (same specificity). */
+.vacation {
+  background: #38bdf8;
+  color: #06283b;
+}
+.extra {
+  background: #7c6fd6;
+  color: #fff;
+}
+.extraHoliday {
+  background: #ef4444;
+  color: #fff;
+}
+
+.planTotal {
+  font-weight: 600;
+  color: var(--accent);
+}

@@ -1,0 +1,76 @@
+.counter {
+  border: 1px solid var(--border);
+  border-radius: var(--radius, 12px);
+  background: var(--surface);
+  padding: 0.75rem 1rem;
+}
+
+.itemAll {
+  font-weight: 600;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip,
+.chipActive {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.chipActive {
+  border-color: var(--accent);
+  color: var(--fg);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.chip:disabled,
+.chipActive:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.chip strong,
+.chipActive strong {
+  color: var(--fg);
+  font-size: 1.05rem;
+}
+
+.list {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 0 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  border-top: 1px solid var(--border);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.date {
+  display: inline-block;
+  min-width: 5.5rem;
+  color: var(--muted);
+}
+
+.desc {
+  font-style: normal;
+  color: var(--muted);
+}

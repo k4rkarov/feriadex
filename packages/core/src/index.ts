@@ -21,6 +21,11 @@ export type { Holiday, VacationWindow } from "./types";
 
 export { evaluateWindow } from "./bridge/evaluate";
 export {
+  describeWindow,
+  type DayKind,
+  type DayMark,
+} from "./bridge/describe";
+export {
   optimizeSingleBlock,
   rankWindows,
   type OptimizeOptions,
@@ -32,4 +37,10 @@ export {
   type SplitConstraints,
   type ValidationResult,
 } from "./split/scheme";
-export { solveSplit, type SplitPlan, type SolveOptions } from "./split/solve";
+export {
+  solveSplit,
+  bestSplit,
+  type SplitPlan,
+  type SolveOptions,
+} from "./split/solve";
+export { partitionsInto } from "./split/partitions";

@@ -4,6 +4,7 @@
 
 /* Design tokens — the only place globals live (see docs/CONVENTIONS.md §2). */
 :root {
+  color-scheme: light;
   --bg: #f6f7f9;
   --surface: #ffffff;
   --fg: #16181d;
@@ -12,8 +13,10 @@
   --border: #e5e7eb;
 }
 
+/* System preference applies only when the user hasn't chosen explicitly. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
+    color-scheme: dark;
     --bg: #0f1115;
     --surface: #171a21;
     --fg: #e6e8ec;
@@ -21,6 +24,29 @@
     --accent: #3b82f6;
     --border: #262b34;
   }
+}
+
+/* Explicit user choice wins over the system preference. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1115;
+  --surface: #171a21;
+  --fg: #e6e8ec;
+  --muted: #9aa1ac;
+  --accent: #3b82f6;
+  --border: #262b34;
+}
+:root[data-theme="light"] {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --fg: #16181d;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --border: #e5e7eb;
+}
+
+html {
+  font-size: 17px;
 }
 
 html,

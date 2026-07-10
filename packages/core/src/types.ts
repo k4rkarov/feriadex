@@ -11,6 +11,8 @@ export interface Holiday {
    * federal holiday but is commonly a day off. Defaults to official.
    */
   observance?: "official" | "optional";
+  /** Short note, shown for optional points (e.g. why it's facultativo). */
+  description?: string;
 }
 
 /**

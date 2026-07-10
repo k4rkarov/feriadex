@@ -5,6 +5,113 @@
 
 ---
 
+## Session 18 — 2026-07-09 — State holidays computed (drop joaopbini for estadual)
+**Focus:** RJ/PE (and others) showed no state holiday because the joaopbini
+estadual dataset stopped at 2026 and their dates fell outside the window.
+
+**Done**
+- Replaced the estadual dataset with a **computed rule table**
+  (`src/br/estadual.ts`) from the owner-provided official state-holiday list:
+  fixed dates + PE's "first Sunday of March" rule. Valid for **any year**.
+- Deleted `src/data/estadual.json` + `scripts/import-estadual.ts`; joaopbini no
+  longer used for estadual (still used for municipal — owner's list had none).
+  Updated `DATA_LICENSE.md`. G-H5 resolved.
+- Verified: RJ São Jorge 2027-04-23, PE Data Magna 2027-03-07 now appear in a
+  12-month window; ES/MT/PR correctly empty. 60 tests green; web build clean.
+
+---
+
+## Session 17 — 2026-07-09 — Post-test fixes (counts, counter, split UX)
+**Focus:** 5 fixes from the user's second test.
+
+1. National count was 28 → fixed: removed Quarta-feira de Cinzas (half-day, not
+   a full holiday), and `loadHolidays` now filters to the actual `[from,to]`
+   window (no per-calendar-year double-count). A 12-month window = **13**
+   (10 official + Carnaval seg/ter + Corpus). Verified.
+2. Holiday counter is now **clickable** — each level (Nac/Est/Mun) expands its
+   dated holiday list (`holidayLists` deduped by precedence).
+3. Deleted the deadline hint sentence.
+4. Brought the split control back as a **"Dividir em" dropdown** (was tabs).
+5. Renamed to **"Dias disponíveis"** + **"Dividir em"** (max 3 for CLT); abono
+   is now implicit; the **"monte o seu" custom input shows only for PJ**.
+
+**New core:** `partitionsInto` + `bestSplit(cal, total, periods, …, constraints)`
+— enumerate valid partitions into N periods, pick the most rest. Tested.
+
+**Verified:** 59 tests green; web typecheck + `next build` clean.
+
+---
+
+## Session 16 — 2026-07-09 — Redesign R3/R4/R5: full UI overhaul
+**Focus:** the redesign UI, in the agreed order.
+
+**R3 (chrome):** theme toggle (system default, persisted, no-FOUC script);
+wider layout + 17px base font; `Header` with title + info button ⚖️ (tooltip =
+CLT summary, opens the law in a new tab); `Footer` (privacy link + copyright);
+`/politica-privacidade` stub page.
+
+**R4 (form):** city dropdown filtered by state (lazy `brCities`); live
+`HolidayCounter` (Nac/Est/Mun via `countHolidays`, dedup); removed the
+include-optional toggle (always on) and the "Dias de férias" field; entitlement
+(default 30) is the only days field; `model.loadHolidays` merges the 3 levels
+(municipal lazy).
+
+**R5 (calendar):** `SplitEditor` reworked to preset **tabs** + custom inputs
+with **auto re-calc** (no button); `CalendarView` month-grid colors each block
+via `describeWindow` (azul = férias, roxo = extra, vermelho = extra-feriado)
+with legend + Início/Retorno/Extras/Total; removed the top-5 list.
+
+**Verified:** `next build` clean (First Load JS ~103 KB — per-UF data
+code-split/lazy); web typecheck clean; 54 package tests green.
+
+**Epic R complete.** Remaining is polish (R6: shadcn, share via URL) + deploy
+(Epic I) + monetization (Epic J).
+
+---
+
+## Session 15 — 2026-07-09 — Redesign R1/R2: data layer + calendar helper
+**Focus:** build the data + core pieces the redesign UI needs.
+
+**Done**
+- Core `describeWindow(cal, window)` → per-day `vacation|extra|extra-holiday`
+  for the calendar coloring. Tested. (R2)
+- Data source settled: **cities from IBGE**, **municipal from joaopbini**
+  (both static/public, no rate limit; folgaextra dropped — hit Cloudflare
+  rate limit). `scripts/import-cities-municipal.ts` baked all 27 UFs:
+  `src/data/cities/{UF}.json` (5571 cities) + `src/data/municipal/{UF}.json`
+  (3846 cities with municipal, keyed by IBGE code, 2024–2026). ~1.6 MB total.
+- Lazy per-UF loaders (dynamic import, code-split): `brCities(uf)`,
+  `brMunicipalHolidays(uf, ibge, from, to)`, and `countHolidays(nat, reg, mun)`
+  with level-precedence dedupe. (R1)
+- Tests: 54 green (added describe + local-data). Typecheck clean.
+
+**Next:** the redesign UI — R3 chrome (theme toggle, wider layout, header info
+button, footer), R4 form (city dropdown + live counter, drop old fields),
+R5 Calcular + calendar result view.
+
+---
+
+## Session 14 — 2026-07-09 — First user test → Redesign v1 spec
+**Focus:** capture the UX overhaul from the first hands-on test (no code yet).
+
+**Done**
+- `docs/REDESIGN.md` — full spec + ordered action plan (Phases R1–R6) for the 8
+  requested changes, calendar color semantics, and new data needs.
+- Decisions locked: dark-mode toggle (system default); wider/bigger layout;
+  optional points always on (drop toggle); header info button → law link (drop
+  on-screen hint); footer privacy + copyright; **city dropdown + municipal
+  holidays + live Nac/Est/Mun counter**; drop "Dias de férias" (entitlement is
+  the only days field, default 30); "Otimizar" → "Calcular"; **calendar result
+  view** (azul=férias, roxo=extra, vermelho=extra-feriado) with scheme **tabs
+  (5 RH presets) + custom input box** that re-calcs live.
+- BACKLOG Epic R added (+ D4/D6/D7 for municipal/cities/counts); PROJECT_STATE
+  and AI_CONTEXT updated. Target screenshots committed at repo root
+  (`folgaextra-tela1.png`, `folgaextra-tela2.png`).
+
+**Next:** execute Epic R starting at the data layer (R1).
+
+---
+
 ## Session 13 — 2026-07-09 — Abono (sell-back) + deadline; compliance closed
 **Focus:** finish the last CLT/RH rules (C4, C8).
 

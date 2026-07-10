@@ -5,6 +5,8 @@
 }
 
 .legend {
+  display: inline-flex;
+  align-items: center;
   font-size: 0.875rem;
   color: var(--muted);
   margin-bottom: 0.25rem;

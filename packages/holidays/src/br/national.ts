@@ -39,11 +39,29 @@ export function brNationalHolidays(year: number): Holiday[] {
     });
   }
 
+  // Federal optional points (pontos facultativos): not national holidays, but
+  // commonly days off — the user decides via the checkbox.
   const optional: Holiday[] = [
-    { date: addDays(easter, -48), name: "Carnaval (segunda)" },
-    { date: addDays(easter, -47), name: "Carnaval (terça)" },
-    { date: addDays(easter, -46), name: "Quarta-feira de Cinzas" },
-    { date: addDays(easter, 60), name: "Corpus Christi" },
+    {
+      date: addDays(easter, -48),
+      name: "Carnaval (segunda)",
+      description: "Ponto facultativo (véspera de Carnaval)",
+    },
+    {
+      date: addDays(easter, -47),
+      name: "Carnaval (terça)",
+      description: "Ponto facultativo nacional",
+    },
+    {
+      date: addDays(easter, -46),
+      name: "Quarta-feira de Cinzas",
+      description: "Ponto facultativo até as 14h",
+    },
+    {
+      date: addDays(easter, 60),
+      name: "Corpus Christi",
+      description: "Ponto facultativo federal; feriado por lei em vários municípios",
+    },
   ].map((h): Holiday => ({ ...h, level: "national", observance: "optional" }));
 
   return [...official, ...optional].sort((a, b) =>

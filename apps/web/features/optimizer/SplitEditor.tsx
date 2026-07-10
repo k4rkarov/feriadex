@@ -1,140 +1,228 @@
-import { useMemo, useState } from "react";
-import { validateScheme, type SplitScheme } from "@feriadex/core";
-import { maxSellBackDays, type LaborPolicy } from "@feriadex/policies";
+import { useEffect, useMemo, useState } from "react";
+import { partitionsInto } from "@feriadex/core";
+import type { LaborPolicy } from "@feriadex/policies";
 import { t } from "@feriadex/i18n";
-import { parseParts } from "./model";
+import { InfoTip } from "../../components/InfoTip";
+import { SchemeTabs } from "./SchemeTabs";
+import { type Scheme, type SplitConfig } from "./model";
 import s from "./SplitEditor.module.css";
 
-/** pt-BR reasons a scheme is invalid, derived from the active policy. */
-function reasons(
-  scheme: SplitScheme,
-  policy: LaborPolicy,
-  sellBack: number,
-  cap: number,
-): string[] {
-  const out: string[] = [];
-  const { parts, totalDays } = scheme;
-  const sum = parts.reduce((a, b) => a + b, 0);
-  if (parts.some((p) => !Number.isInteger(p) || p <= 0))
-    out.push(t("split.rule.positive"));
-  if (sum !== totalDays)
-    out.push(t("split.rule.sum").replace("{total}", String(totalDays)));
-  if (parts.length > policy.maxPeriods)
-    out.push(t("split.rule.periods").replace("{n}", String(policy.maxPeriods)));
-  const sorted = [...parts].sort((a, b) => b - a);
-  if ((sorted[0] ?? 0) < policy.minMainBlockDays)
-    out.push(t("split.rule.main").replace("{n}", String(policy.minMainBlockDays)));
-  if (sorted.slice(1).some((p) => p < policy.minOtherBlockDays))
-    out.push(
-      t("split.rule.other").replace("{n}", String(policy.minOtherBlockDays)),
-    );
-  if (sellBack > cap)
-    out.push(t("split.rule.sellback").replace("{n}", String(cap)));
-  return out;
+/** Even split of `total` into `n` blocks (bigger blocks first). */
+function equalize(n: number, total: number): string[] {
+  if (n < 1 || !Number.isFinite(total) || total < 1) return ["0"];
+  const base = Math.floor(total / n);
+  const rem = total % n;
+  return Array.from({ length: n }, (_, i) => String(base + (i < rem ? 1 : 0)));
 }
 
 export function SplitEditor({
   policy,
-  onCompute,
+  onChange,
+  schemes,
+  selectedScheme,
+  onSelectScheme,
 }: {
   policy: LaborPolicy;
-  onCompute: (scheme: SplitScheme) => void;
+  onChange: (config: SplitConfig | null) => void;
+  schemes: Scheme[];
+  selectedScheme: number;
+  onSelectScheme: (i: number) => void;
 }) {
-  const [entitlement, setEntitlement] = useState(30);
-  const [sellBack, setSellBack] = useState(0);
-  const [partsText, setPartsText] = useState("14, 11, 5");
+  const [availSelect, setAvailSelect] = useState("30");
+  const [availText, setAvailText] = useState("30");
+  const [bancoText, setBancoText] = useState("0");
+  const [periods, setPeriods] = useState(3);
+  const [blocks, setBlocks] = useState<string[]>(["10", "10", "10"]);
 
-  const cap = maxSellBackDays(policy, entitlement);
-  const scheduled = entitlement - sellBack;
-  const scheme = useMemo<SplitScheme>(
-    () => ({ totalDays: scheduled, parts: parseParts(partsText) }),
-    [scheduled, partsText],
-  );
-  const why = reasons(scheme, policy, sellBack, cap);
-  const valid = validateScheme(scheme, policy).valid && sellBack <= cap && sellBack >= 0;
+  const allowCustom = policy.minMainBlockDays <= 1; // free mode
+  const otherMode = availSelect === "other";
 
-  const applyPreset = (value: string) => {
-    const p = policy.presets[Number(value)];
-    if (!p) return;
-    // Presets encode scheduled days; assume a 30-day entitlement and infer the
-    // abono as the remainder (e.g. totalDays 20 → 10 sold).
-    setEntitlement(30);
-    setSellBack(Math.max(0, 30 - p.totalDays));
-    setPartsText(p.parts.join(", "));
+  const availableDays =
+    allowCustom || otherMode
+      ? Math.trunc(Number(availText))
+      : Number(availSelect);
+  const availValid = Number.isFinite(availableDays) && availableDays >= 1;
+  const banco =
+    bancoText.trim() === "" ? 0 : Math.max(0, Math.trunc(Number(bancoText)));
+
+  // CLT: only period counts that yield a valid partition. (Skip in free mode;
+  // PJ.maxPeriods is huge, so never loop over it.)
+  const periodOptions = useMemo(() => {
+    if (allowCustom || !availValid) return [1];
+    const max = Math.min(policy.maxPeriods, 6);
+    const opts: number[] = [];
+    for (let n = 1; n <= max; n++) {
+      const ok = partitionsInto(availableDays, n, policy.minOtherBlockDays).some(
+        (p) => Math.max(...p) >= policy.minMainBlockDays,
+      );
+      if (ok) opts.push(n);
+    }
+    return opts.length ? opts : [1];
+  }, [allowCustom, availValid, availableDays, policy]);
+  const activePeriods = periodOptions.includes(periods)
+    ? periods
+    : periodOptions[0]!;
+
+  // Free mode: block values must be positive and sum to the available days.
+  const blockNums = blocks.map((b) => Math.trunc(Number(b)));
+  const blockSum = blockNums.reduce((a, b) => a + (Number.isFinite(b) ? b : 0), 0);
+  const blocksValid =
+    availValid &&
+    blockNums.every((b) => Number.isFinite(b) && b >= 1) &&
+    blockSum === availableDays;
+
+  useEffect(() => {
+    if (!availValid) return onChange(null);
+    if (allowCustom) {
+      if (!blocksValid) return onChange(null);
+      onChange({ availableDays, periods: blockNums.length, banco, customParts: blockNums });
+    } else {
+      onChange({ availableDays, periods: activePeriods, banco, customParts: null });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [availText, availSelect, bancoText, blocks, activePeriods, allowCustom]);
+
+  const setBlockCount = (n: number) => {
+    if (n < 1) return;
+    setBlocks(equalize(n, availValid ? availableDays : 1));
   };
 
   return (
     <div className={s.editor}>
-      <label className={s.field}>
-        <span>{t("split.preset")}</span>
-        <select defaultValue="" onChange={(e) => applyPreset(e.target.value)}>
-          <option value="" disabled>
-            —
-          </option>
-          {policy.presets.map((p, i) => (
-            <option key={i} value={i}>
-              {p.totalDays}d: {p.parts.join(" + ")}
-            </option>
-          ))}
-        </select>
-      </label>
-
       <div className={s.row}>
-        <label className={s.field}>
-          <span>{t("split.entitlement")}</span>
-          <input
-            type="number"
-            min={1}
-            max={30}
-            value={entitlement}
-            onChange={(e) => setEntitlement(Math.max(1, Number(e.target.value)))}
-          />
+        <label className={`${s.field} ${s.num}`}>
+          <span>
+            {t("split.entitlement")}
+            <InfoTip text={t("split.entitlement.info")} />
+          </span>
+          {allowCustom ? (
+            <input
+              type="number"
+              min={1}
+              value={availText}
+              onChange={(e) => setAvailText(e.target.value)}
+            />
+          ) : (
+            <select value={availSelect} onChange={(e) => setAvailSelect(e.target.value)}>
+              <option value="30">{t("split.avail30")}</option>
+              <option value="20">{t("split.avail20")}</option>
+              <option value="other">{t("split.availOther")}</option>
+            </select>
+          )}
         </label>
-        <label className={s.field}>
-          <span>{t("split.sellBack")}</span>
+
+        {otherMode && !allowCustom && (
+          <label className={`${s.field} ${s.num}`}>
+            <span>{t("split.availOther")}</span>
+            <input
+              type="number"
+              min={1}
+              value={availText}
+              onChange={(e) => setAvailText(e.target.value)}
+            />
+          </label>
+        )}
+
+        <label className={`${s.field} ${s.num}`}>
+          <span>
+            {t("split.banco")}
+            <InfoTip text={t("split.banco.info")} />
+          </span>
           <input
             type="number"
             min={0}
-            max={cap}
-            value={sellBack}
-            disabled={cap === 0}
-            onChange={(e) => setSellBack(Math.max(0, Number(e.target.value)))}
+            value={bancoText}
+            onChange={(e) => setBancoText(e.target.value)}
           />
         </label>
+
         <div className={s.field}>
-          <span>{t("split.scheduled")}</span>
-          <strong className={s.scheduled}>{scheduled}</strong>
+          <span>
+            {t("split.periods")}
+            <InfoTip text={t("split.periods.info")} />
+          </span>
+          {allowCustom ? (
+            <div className={s.stepper}>
+              <button
+                type="button"
+                className={s.stepBtn}
+                onClick={() => setBlockCount(blocks.length - 1)}
+                disabled={blocks.length <= 1}
+              >
+                −
+              </button>
+              <span className={s.stepVal}>{blocks.length}</span>
+              <button
+                type="button"
+                className={s.stepBtn}
+                onClick={() => setBlockCount(blocks.length + 1)}
+              >
+                +
+              </button>
+            </div>
+          ) : (
+            <div className={s.radios}>
+              {periodOptions.map((n) => (
+                <label key={n} className={s.radio}>
+                  <input
+                    type="radio"
+                    name="periods"
+                    checked={activePeriods === n}
+                    onChange={() => setPeriods(n)}
+                  />
+                  {n}
+                </label>
+              ))}
+            </div>
+          )}
         </div>
+
+        {!allowCustom && schemes.length > 1 && (
+          <div className={s.schemesInline}>
+            <SchemeTabs
+              schemes={schemes}
+              selected={selectedScheme}
+              onSelect={onSelectScheme}
+            />
+          </div>
+        )}
       </div>
 
-      <label className={`${s.field} ${s.grow}`}>
-        <span>{t("split.custom")}</span>
-        <input
-          type="text"
-          value={partsText}
-          onChange={(e) => setPartsText(e.target.value)}
-          inputMode="numeric"
-        />
-      </label>
-
-      <div className={valid ? s.ok : s.bad}>
-        {valid ? `✓ ${t("split.valid")}` : `✕ ${t("split.invalid")}`}
-      </div>
-      {!valid && (
-        <ul className={s.reasons}>
-          {why.map((r) => (
-            <li key={r}>{r}</li>
+      {allowCustom && (
+        <div className={s.blocks}>
+          {blocks.map((b, i) => (
+            <label key={i} className={`${s.field} ${s.blockField}`}>
+              <span>
+                {t("split.block")} {i + 1}
+              </span>
+              <input
+                type="number"
+                min={1}
+                value={b}
+                onChange={(e) =>
+                  setBlocks((prev) => {
+                    const next = [...prev];
+                    next[i] = e.target.value;
+                    return next;
+                  })
+                }
+              />
+            </label>
           ))}
-        </ul>
+          <div className={s.totalWrap}>
+            <span className={blocksValid ? s.totalOk : s.totalBad}>
+              {t("split.freeTotal")} {blockSum}/{availValid ? availableDays : "—"}
+            </span>
+            <button
+              type="button"
+              className={s.equalize}
+              onClick={() => setBlocks(equalize(blocks.length, availableDays))}
+            >
+              {t("split.equalize")}
+            </button>
+          </div>
+        </div>
       )}
-
-      <button
-        className={s.primary}
-        disabled={!valid}
-        onClick={() => onCompute(scheme)}
-      >
-        {t("split.compute")}
-      </button>
     </div>
   );
 }

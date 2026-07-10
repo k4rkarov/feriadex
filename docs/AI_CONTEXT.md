@@ -22,6 +22,8 @@ copy is pt-BR via the i18n layer.
 | `docs/CONVENTIONS.md` | **Rule #0** — file organization, modularity, no-inline-CSS, where-does-this-go map | rarely |
 | `docs/ARCHITECTURE.md` | Target architecture, monorepo layout, module boundaries, ADRs | on design change |
 | `docs/COMPLIANCE.md` | CLT Art. 134 + RH vacation rules → where enforced in code | on split-logic change |
+| `docs/MONETIZATION.md` | Deferred ads plan (AdSense, LGPD consent, placements) | when monetizing |
+| `docs/REDESIGN.md` | **Active UX overhaul spec + action plan** (city/municipal data, calendar result, theme toggle, layout) | until redesign done |
 | `docs/api/openapi.yaml` | REST API design (draft) | on API change |
 | `docs/BACKLOG.md` | Prioritized epics/stories | each planning pass |
 | `docs/KNOWLEDGE_GAPS.md` | Open questions / unknowns / research needed | when a gap opens/closes |
