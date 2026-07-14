@@ -8,14 +8,16 @@ describe("brNationalHolidays", () => {
 
   it("includes fixed official holidays, with their establishing law cited", () => {
     expect(byDate.get("2026-01-01")?.name).toBe("Confraternização Universal (Lei nº 662/1949)");
-    expect(byDate.get("2026-04-21")?.name).toBe("Tiradentes (Lei nº 10.607/2002)");
-    expect(byDate.get("2026-12-25")?.name).toBe("Natal (Lei nº 662/1949)");
+    expect(byDate.get("2026-04-21")?.name).toBe("Tiradentes");
+    expect(byDate.get("2026-04-21")?.description).toBe("Lei nº 10.607/2002");
+    expect(byDate.get("2026-12-25")?.name).toBe("Natal");
+    expect(byDate.get("2026-12-25")?.description).toBe("Lei nº 662/1949");
   });
 
   it("computes movable dates for 2026 (known real dates)", () => {
     expect(byDate.get("2026-04-03")?.name).toBe("Sexta-feira Santa");
-    expect(byDate.get("2026-02-16")?.name).toBe("Carnaval (segunda)");
-    expect(byDate.get("2026-02-17")?.name).toBe("Carnaval (terça)");
+    expect(byDate.get("2026-02-16")?.name).toBe("Véspera de Carnaval");
+    expect(byDate.get("2026-02-17")?.name).toBe("Carnaval");
     expect(byDate.get("2026-06-04")?.name).toBe("Corpus Christi");
   });
 

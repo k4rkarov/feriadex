@@ -93,14 +93,6 @@ green**. Run tests: `corepack pnpm test`; run app: `corepack pnpm --filter web d
 - Deadline/concessive-period input contract (G-P2).
 - Whether Region→City model generalizes internationally (G-I1; future).
 
-## Next steps (in order)
-1. **Polish** — shadcn components, empty/error states. (E5)
-2. **Custom domain** — `CNAME` + DNS; drop `NEXT_PUBLIC_BASE_PATH` from the workflow. (I2)
-3. **localStorage recents** — remember recent studies alongside the URL sharing. (E4 tail)
-4. **Monetization** (deferred) — privacy policy, LGPD consent, AdSense. (Epic J)
-5. **Data** — enrich municipal capital names (D8). Features: .ics export, compare
-   scenarios, heatmap (Epic F). International: locale routing + 2nd country (Epic G).
-
 **Recently done:** share-via-URL (readable params) + hydration-safe restore (E4);
 period-overlap correctness — core `bestAssignment` + conflict-free UI selection,
 honest `Máx. possível` (G-A3); ESLint flat config with no-inline-CSS guard (A2) +
@@ -114,7 +106,26 @@ data path (`packages/holidays/src/br/data/` — was a shared top-level
 every national + state holiday (each now cites its establishing law/
 constitutional provision — see G-H3/G-H5) which caught 4 stale/invalid state
 entries (PE's rule, PB's abolished Jul 26, PI's never-real Jenipapo, RO's
-unconstitutional Evangélico) and fixed them.
+unconstitutional Evangélico) and fixed them; globally-optimal split solver
+(C5) — `solveSplit` replaced greedy with a true combinatorial search shared
+with the calendar's overlap-free placement, and the CLT scheme-tab ranking
+now uses the same accurate total instead of an independent-per-block
+estimate; localStorage recents (E4) — up to 8 saved studies, click to
+reapply, removable.
+
+**Recently done (cont.):** F1 heatmap (read-only, per period, validated green
+ramp) + F2 export (Google Calendar link + .ics, full rest span, all periods
+bundled in one file) — see BACKLOG.md and SESSION_SUMMARY for detail.
+
+## Next steps (in order)
+1. **Polish** — shadcn components, empty/error states. (E5)
+2. **F3/F4** — compare scenarios side by side; profile presets (CLT/servidor/PJ).
+3. **Enrich municipal names** — replace generic "Feriado Municipal" entries
+   directly in `src/br/data/{UF}.json` (D8, deferred by owner for now).
+4. **Custom domain** — `CNAME` + DNS; drop `NEXT_PUBLIC_BASE_PATH` from the
+   workflow. (I2, deferred by owner for now)
+5. i18n/2nd country (Epic G), monetization (Epic J), persistence/scale
+   (Epic H) — all deferred, see BACKLOG.md.
 
 (Done: engine + data + compliance + full redesign UI + **deploy (GitHub Pages)**
 + **SEO/OG/sitemap/robots**. See SESSION_SUMMARY.)

@@ -533,3 +533,110 @@ project's documentation baseline.
 - Updated `br-national.test.ts`/`br-estadual.test.ts` for the new names/dates;
   added a test asserting the 3 removed entries (PB/PI/RO) no longer emit.
   70 tests green, typecheck/lint/build clean.
+
+## Session — 2026-07-14 — globally-optimal split solver + localStorage recents
+- **C5: split solver.** `solveSplit` replaced its greedy largest-block-first
+  placement with a true combinatorial search: candidates per block length are
+  ranked by `totalRestDays` (not efficiency — the previous ranking function,
+  reused for a different objective, was part of why greedy under-performed),
+  capped adaptively (`max(8, 60/blockCount)`) for speed, fed into the same
+  `bestAssignment` DFS+bound already built for the calendar's overlap-free
+  placement (G-A3) — with an uncapped fallback so the cap can only cost
+  optimality in a vanishingly rare edge case, never feasibility. A shared
+  `candidateCache` (block length → ranked candidates) threads through
+  `bestSplit`'s partition loop, cutting its test runtime from ~700ms to
+  ~360ms by not recomputing shared lengths per partition.
+  - Also fixed `buildSchemes` (the CLT scheme-tab ranking in
+    `apps/web/features/optimizer/model.ts`) — it ranked partitions by an
+    independent per-block sum (documented as an approximation, same root
+    cause as the pre-G-A3 "Máx. possível" bug) instead of the true
+    non-overlapping total. Now calls `solveSplit` per partition (banco de
+    horas included as a block, since it competes for the same calendar) with
+    a shared cache, so tab ordering matches what the calendar can actually
+    achieve.
+  - Added a regression test proving the fix: one holiday creates a single
+    best 4-day window that collides with a 1-day block's best pick; the old
+    greedy algorithm (reproduced inline to verify, then deleted) got total
+    rest 6, the new solver gets 10 by swapping the 4-day block to an
+    equally-good alternate elsewhere.
+  - Deadline handling (the other half of C5) was already structurally
+    enforced — every candidate is generated within `[from, to]` — confirmed
+    unchanged, no separate feature needed.
+- **E4: localStorage recents.** New `apps/web/lib/recents.ts`
+  (load/save/remove, capped at 8, dedupes an identical study by bumping it to
+  the front) + `RecentStudies.tsx` (chip row, click to reapply, × to
+  remove). Saved automatically when the user shares (reuses the existing
+  `Study` object from `copyLink`). Reapplying required two fixes to the
+  existing share-restore plumbing, since it was built for a one-time
+  initial URL restore, not repeated re-application:
+  - `SplitEditor`'s "seed once" `useRef` guard would only apply `initial`
+    the very first time — removed it; `initial` is a fresh object reference
+    on every restore already, so depending on that reference is sufficient
+    and correctly re-fires on a second/third recent without re-seeding on
+    unrelated re-renders.
+  - The scheme-tab `div`-matching effect's `appliedDiv` ref was similarly
+    "consume once forever" — moved its reset into the new shared
+    `applyStudy` helper (factored out of the old URL-only mount effect, now
+    used by both the URL restore and "apply a recent" click), so each
+    restore gets its own one-shot match attempt.
+  - Verified empty-recents render matches server and client (no
+    "Estudos recentes" section in the initial HTML), so there's no
+    hydration mismatch — recents load client-side, after mount, same
+    pattern as the URL-restore fix from an earlier session.
+- 71 tests green (was 71 already; net +1 for the C5 regression test, minus
+  1 stale assertion fixed for a user-made rename), typecheck/lint/build clean.
+
+## Session — 2026-07-14 (cont.) — F1 heatmap + F2 calendar export
+- **F1: annual efficiency heatmap.** `computePeriods` now also returns
+  `allWindows` (every candidate start date for a block length, not just the
+  by-month best) — reuses the scan it already runs, no extra computation.
+  Extracted the month-grid shell (`MonthGrid.tsx`/`.module.css`: label,
+  weekday header, empty-cell alignment, the `Balloon` tooltip) out of
+  `CalendarView` so both it and the new `HeatmapView` share layout without
+  sharing day-cell styling/interaction (they differ enough — plan colors +
+  holiday-name balloon vs. efficiency colors + value tooltip — that only the
+  shell was worth sharing). `HeatmapView` renders the whole `[from, to]`
+  range for the active period's block length, color-coded by total rest.
+  Scoped down from "interactive" (click a day to select it) to read-only
+  with a tap/click tooltip, by explicit owner choice — avoids refactoring
+  `CalendarView`'s selection state (currently "index into the by-month
+  list") to "an arbitrary window," which click-to-select from a heatmap
+  would have required.
+  - Color ramp: consulted the dataviz skill (sequential ramp = one hue,
+    light→dark, checked with `--ordinal`, not the categorical validator —
+    that fails by design on a sequential ramp). Landed on a 4-step green
+    ramp per theme after a few iterations (adjacent ΔL ≥0.06, light end
+    ≥2:1 against the surface): light `#22c55e→#16a34a→#15803d→#14532d`,
+    dark `#166534→#15803d→#16a34a→#22c55e` (anchor flips per the skill's
+    dark-mode guidance — brightest = most prominent against a dark surface).
+  - Toggle button ("Ver mapa de calor"/"Ver plano escolhido") swaps the
+    month-picker+result block for the heatmap, per active period tab.
+- **F2: Google Calendar + .ics export.** New `apps/web/lib/calendarExport.ts`
+  — `toGoogleCalendarUrl` (Google's event-creation URL, no API/auth) and
+  `toIcsText` (minimal valid RFC 5545 VCALENDAR, one VEVENT per period,
+  proper field escaping). Both use the *exclusive* end-date convention
+  (day after the last day) both Google and the .ics all-day-event spec
+  require. Exports the full **rest span** (`core`'s `restSpan` — booked days
+  + the free days they bridge), not just the booked block, since that's what
+  the person actually experiences as "I'm off." Two icon buttons next to the
+  existing share icon: Google Calendar acts on the current period (only one
+  event fits in that URL scheme); the .ics button bundles every period into
+  one file when there's more than one, so there's no separate "download all"
+  control to add.
+  - Added `apps/web/lib/calendarExport.test.ts` (4 tests, pure date-math and
+    escaping) — first test file under `apps/web`; picked up automatically by
+    the existing root `vitest run` with zero config changes (no vitest.config
+    exists, so it already scans the whole workspace).
+- Fixed 2 stale test assertions along the way for names the user had
+  manually simplified in `national.ts` since the last session ("Véspera de
+  Carnaval (segunda)" → "Véspera de Carnaval", "Carnaval (terça)" →
+  "Carnaval").
+- 75 tests green, typecheck/lint/build clean. Confirmed via `grep` that no
+  holiday data leaked into JS chunks (unrelated to this session's work, but
+  re-verified after the CalendarView refactor touched a lot of surface).
+- **Not verified interactively**: no browser-automation tool is available in
+  this environment, so the heatmap toggle/tooltip and the two export buttons
+  were verified by build/typecheck/lint/unit-test and a dev-server health
+  check (loads, no console/server errors) — not by actually clicking through
+  them in a real browser. Recommended the user try it locally and report
+  back before considering this fully done.

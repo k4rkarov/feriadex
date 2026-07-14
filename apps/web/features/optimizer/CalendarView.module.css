@@ -37,6 +37,13 @@
   gap: 0.4rem;
 }
 
+.actionsRow,
+.badgesRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .extrasBadge,
 .maxBadge {
   padding: 0.3rem 0.7rem;
@@ -161,6 +168,26 @@
   font-weight: 700;
 }
 
+.viewToggleRow {
+  display: flex;
+}
+
+.viewToggle {
+  margin-left: auto;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.viewToggle:hover {
+  color: var(--fg);
+  border-color: var(--accent);
+}
+
 .summary {
   display: flex;
   flex-wrap: wrap;
@@ -192,26 +219,16 @@
   background: color-mix(in srgb, var(--accent) 14%, transparent);
 }
 
-.months {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-}
-
-.month {
-  min-width: 15rem;
-  flex: 1;
-}
-
 @media (max-width: 640px) {
-  .month {
-    min-width: 100%;
-  }
   .badges {
     margin-left: 0;
     width: 100%;
+    flex-direction: column;
+  }
+  .actionsRow,
+  .badgesRow {
+    width: 100%;
     justify-content: center;
-    flex-wrap: wrap;
   }
   .yearGroup {
     flex-basis: 100%;
@@ -219,29 +236,9 @@
   .periodTabs,
   .optionTabs,
   .summary,
-  .legend,
-  .months {
+  .legend {
     justify-content: center;
   }
-}
-
-.monthLabel {
-  font-weight: 600;
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
-}
-
-.dow {
-  text-align: center;
-  font-size: 0.7rem;
-  color: var(--muted);
-  padding-bottom: 0.15rem;
 }
 
 .day {
@@ -252,10 +249,6 @@
   font-size: 0.8rem;
   border-radius: 6px;
   background: color-mix(in srgb, var(--fg) 5%, transparent);
-}
-
-.empty {
-  aspect-ratio: 1;
 }
 
 /* Holiday days are clickable to reveal their name. */
@@ -276,26 +269,6 @@
   border-radius: 50%;
   background: currentColor;
   opacity: 0.5;
-}
-
-.balloon {
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 6;
-  width: max-content;
-  max-width: 60vw;
-  padding: 0.4rem 0.55rem;
-  font-size: 0.72rem;
-  font-weight: 500;
-  white-space: normal;
-  color: var(--fg);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  pointer-events: none;
 }
 
 /* Weekend gets a subtle tint (kind colors below override it when set). */

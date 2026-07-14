@@ -22,7 +22,7 @@
 - [x] `done` C2. `SplitConstraints` + `validateScheme` (main ≥14, others ≥5, ≤3 periods, sum check).
 - [x] `done` C3. BR/CLT policy pack + common RH presets (30d and 20d schemes); presets validated in tests.
 - [x] `done` C4. Sell-back (abono pecuniário): `maxSellBackDays` + entitlement/sell-back inputs (capped), scheduled days derived.
-- [ ] `wip`  C5. Split solver: greedy `solveSplit` **done**; globally-optimal search + deadline handling **todo**.
+- [x] `done` C5. Split solver: `solveSplit` now does a true combinatorial search (`bestAssignment`, shared with the calendar's per-period placement) instead of greedy largest-block-first — a capped candidate pool per block with an uncapped fallback keeps it fast without ever missing a feasible placement. `buildSchemes` (CLT tab ranking) uses the same accurate total instead of an independent-per-block estimate. Deadline handling was already structurally enforced ([from,to] bounds every candidate); confirmed unchanged.
 - [x] `done` C6. Custom scheme editor with live CLT validation; user overrides preset (`apps/web/features/optimizer/SplitEditor.tsx`).
 - [x] `done` C7. CLT Art. 134 §3 start rule — no start within 2 days before holiday/DSR (`isAllowedStart` + `cltStartAllowed`, wired as `allowStart`). See docs/COMPLIANCE.md.
 - [x] `done` C8. Deadline (período concessivo): `to` labeled as the return-limit + hint; blocks bound within `[from, to]`; "não cabe no prazo" error when a block can't fit.
@@ -64,13 +64,24 @@
 - [x] `done` E1. Input form: regime toggle, searchable state + city, working-week, custom period, banco de horas, available-days.
 - [x] `done` E2. Split picker: preset dropdown **+ custom editor with live CLT validation** (`SplitEditor`) → `solveSplit`. (fulfils C6)
 - [x] `done` E3. Result view: **visual calendar** (`CalendarView`) per block with color legend + Início/Retorno/Extras/Total.
-- [ ] `todo` E4. Shareable study via URL-encoded state; localStorage recents.
+- [x] `done` E4. Shareable study via URL-encoded state (readable params, hydration-safe restore) + localStorage recents (up to 8, saved on share, click-to-reapply, removable).
 - [ ] `wip`  E5. Design system: Tailwind preset + CSS Modules + tokens/dark mode **done**; shadcn/ui components **todo**.
 - [x] `done` E6. Static export (`output: 'export'`) building to `out/` (107 KB first load, prerendered). No `/api` (deferred). CDN deploy config **todo**.
 
 ## Epic F — Differentiator features (P2)
-- [ ] `todo` F1. Interactive annual calendar with efficiency heatmap.
-- [ ] `todo` F2. Export to Google Calendar / .ics / shareable image.
+- [x] `done` F1. Annual calendar efficiency heatmap, per period ("Ver mapa de
+      calor" toggle in `CalendarView`) — every candidate start date for that
+      block length, colored by total rest (validated sequential green ramp,
+      dataviz skill). Read-only with a tap/click tooltip (date + rest days),
+      not click-to-select — kept the month-tab picker as the one selection
+      mechanism (scoped down from "interactive" by owner decision, to avoid
+      a bigger refactor of `CalendarView`'s selection state for a first pass).
+- [x] `done` F2. Export to Google Calendar (prefilled event-creation link, no
+      API/auth) + downloadable .ics (works with Apple Calendar/Outlook too;
+      bundles all periods in one file when there's more than one). Exports
+      the full rest span (booked days + the free days it bridges), not just
+      the booked block. Shareable-image export deferred (separate scope, not
+      requested this round).
 - [ ] `todo` F3. Compare scenarios side by side (10 vs 15 days, split vs not).
 - [ ] `todo` F4. Profile presets (CLT, public servant, PJ).
 

@@ -2,6 +2,7 @@ import {
   createCalendar,
   optimizeSingleBlock,
   partitionsInto,
+  solveSplit,
   type Calendar,
   type Holiday,
   type VacationWindow,
@@ -71,8 +72,11 @@ export interface Scheme {
 /**
  * All valid vacation partitions of `availableDays` into `periods` blocks under
  * the floor (one block ≥ minMain, others ≥ minOther), ranked by best
- * achievable rest. RH example schemes are flagged. Overlap between periods is
- * not accounted for in the ranking (independent per-period estimate).
+ * achievable rest. RH example schemes are flagged. Ranked by the true
+ * non-overlapping placement (`solveSplit`, BACKLOG C5) — including the banco
+ * de horas block, since it competes for the same calendar as everything else
+ * — not an independent per-block estimate, so the ordering matches what the
+ * calendar view can actually achieve.
  */
 export function buildSchemes(
   cal: Calendar,
@@ -89,29 +93,31 @@ export function buildSchemes(
   const partitions = partitionsInto(availableDays, periods, minOther).filter(
     (p) => Math.max(...p) >= minMain,
   );
-  const cache = new Map<number, number>();
-  const bestRest = (len: number): number => {
-    if (!cache.has(len)) {
-      const top = optimizeSingleBlock(cal, {
-        lengthDays: len,
-        from,
-        to,
-        limit: 1,
-        allowStart,
-      })[0];
-      cache.set(len, top ? top.totalRestDays : 0);
-    }
-    return cache.get(len)!;
-  };
-  const bancoRest = banco > 0 ? bestRest(banco) : 0;
   const key = (p: number[]) => [...p].sort((a, b) => a - b).join(",");
   const rhKeys = new Set(rhPresets.map(key));
+  // Shared across every partition: block lengths repeat heavily (e.g. "5" in
+  // nearly every 30-day/3-period CLT split), so this avoids recomputing
+  // optimizeSingleBlock for the same length once per partition.
+  const candidateCache = new Map<number, VacationWindow[]>();
+
   return partitions
-    .map((parts) => ({
-      parts,
-      isRH: rhKeys.has(key(parts)),
-      maxRest: parts.reduce((s, l) => s + bestRest(l), 0) + bancoRest,
-    }))
+    .map((parts) => {
+      const allParts = banco > 0 ? [...parts, banco] : parts;
+      let maxRest = 0;
+      try {
+        maxRest = solveSplit(
+          cal,
+          { totalDays: allParts.reduce((a, b) => a + b, 0), parts: allParts },
+          from,
+          to,
+          { allowStart, candidateCache },
+        ).totalRestDays;
+      } catch {
+        // No non-overlapping placement fits this partition in the window —
+        // rank it last rather than hide it (mirrors bestSplit's skip logic).
+      }
+      return { parts, isRH: rhKeys.has(key(parts)), maxRest };
+    })
     .sort((a, b) => b.maxRest - a.maxRest || Number(b.isRH) - Number(a.isRH));
 }
 
@@ -175,12 +181,16 @@ export interface PeriodOptions {
   length: number;
   /** Best window per start-month, ranked by total rest (most first). */
   options: VacationWindow[];
+  /** Every candidate start date in range for this length (feeds the heatmap). */
+  allWindows: VacationWindow[];
 }
 
 /**
  * For each block size, the best placement per start-month across the window,
  * ranked by total rest. Lets the user pick which month to take each period
- * (e.g. "Jul +3", "Ago +3"), instead of a single greedy placement.
+ * (e.g. "Jul +3", "Ago +3"), instead of a single greedy placement. Also
+ * returns every candidate (not just the by-month best) for the heatmap view
+ * (BACKLOG F1) — reuses this same scan instead of recomputing it.
  */
 export function computePeriods(
   cal: Calendar,
@@ -208,7 +218,7 @@ export function computePeriods(
         b.totalRestDays - a.totalRestDays ||
         (a.startDate < b.startDate ? -1 : 1),
     );
-    return { length, options };
+    return { length, options, allWindows: all };
   });
 }
 

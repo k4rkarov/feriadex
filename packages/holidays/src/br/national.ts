@@ -48,13 +48,13 @@ export function brNationalHolidays(year: number): Holiday[] {
       description:
         "Feriado religioso observado por adesão municipal (Lei nº 9.093/1995, art. 2º) — não há lei federal que o declare feriado nacional diretamente",
     },
-    { date: fixed(year, 4, 21), name: "Tiradentes (Lei nº 10.607/2002)" },
-    { date: fixed(year, 5, 1), name: "Dia do Trabalho (Lei nº 662/1949)" },
-    { date: fixed(year, 9, 7), name: "Independência do Brasil (Lei nº 662/1949)" },
-    { date: fixed(year, 10, 12), name: "Nossa Senhora Aparecida (Lei nº 6.802/1980)" },
-    { date: fixed(year, 11, 2), name: "Finados (Lei nº 10.607/2002)" },
-    { date: fixed(year, 11, 15), name: "Proclamação da República (Lei nº 662/1949)" },
-    { date: fixed(year, 12, 25), name: "Natal (Lei nº 662/1949)" },
+    { date: fixed(year, 4, 21), name: "Tiradentes", description: "Lei nº 10.607/2002" },
+    { date: fixed(year, 5, 1), name: "Dia do Trabalho", description: "Lei nº 662/1949" },
+    { date: fixed(year, 9, 7), name: "Independência do Brasil", description: "Lei nº 662/1949" },
+    { date: fixed(year, 10, 12), name: "Nossa Senhora Aparecida", description: "Lei nº 6.802/1980" },
+    { date: fixed(year, 11, 2), name: "Finados", description: "Lei nº 10.607/2002" },
+    { date: fixed(year, 11, 15), name: "Proclamação da República", description: "Lei nº 662/1949" },
+    { date: fixed(year, 12, 25), name: "Natal", description: "Lei nº 662/1949" },
   ].map((h): Holiday => ({ ...h, level: "national", observance: "official" }));
 
   if (year >= 2024) {
@@ -73,12 +73,12 @@ export function brNationalHolidays(year: number): Holiday[] {
   const optional: Holiday[] = [
     {
       date: addDays(easter, -48),
-      name: "Véspera de Carnaval (segunda)",
+      name: "Véspera de Carnaval",
       description: "Definido anualmente por Portaria do Governo Federal, sem lei fixa",
     },
     {
       date: addDays(easter, -47),
-      name: "Carnaval (terça)",
+      name: "Carnaval",
       description: "Definido anualmente por Portaria do Governo Federal, sem lei fixa",
     },
     {

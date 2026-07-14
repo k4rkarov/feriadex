@@ -24,6 +24,7 @@ import {
 } from "./model";
 import { encodeStudy, parseStudy, type Study } from "../../lib/share";
 import { asset } from "../../lib/asset";
+import { loadRecents, removeRecent, saveRecent, type RecentStudy } from "../../lib/recents";
 import { InfoTip } from "../../components/InfoTip";
 import { Toggle } from "../../components/Toggle";
 import { SearchSelect } from "../../components/SearchSelect";
@@ -31,6 +32,7 @@ import { WorkingWeekPicker } from "./WorkingWeekPicker";
 import { SplitEditor, type SplitInitial } from "./SplitEditor";
 import { HolidayCounter } from "./HolidayCounter";
 import { CalendarView } from "./CalendarView";
+import { RecentStudies } from "./RecentStudies";
 import s from "./Optimizer.module.css";
 
 export function Optimizer() {
@@ -49,10 +51,14 @@ export function Optimizer() {
   const [copied, setCopied] = useState(false);
   const [splitInitial, setSplitInitial] = useState<SplitInitial | null>(null);
   const [wantDiv, setWantDiv] = useState<number[] | null>(null);
+  const [recents, setRecents] = useState<RecentStudy[]>([]);
 
-  // Apply a shared study from the URL once, after hydration.
-  useEffect(() => {
-    const p = parseStudy(window.location.search);
+  // Apply a study (from the shared-link URL or a saved recent) to every
+  // field it touches. `appliedDiv` is reset here so the scheme-matching
+  // effect below gets a fresh one-shot attempt on each restore, not just the
+  // very first one.
+  const appliedDiv = useRef(false);
+  const applyStudy = (p: Partial<Study>) => {
     if (p.uf !== undefined) setUf(p.uf);
     if (p.city !== undefined) setCityIbge(p.city);
     if (p.clt !== undefined) setFollowClt(p.clt);
@@ -60,13 +66,21 @@ export function Optimizer() {
     if (p.from) setFrom(p.from);
     if (p.to) setTo(p.to);
     if (p.excluded) setExcluded(new Set(p.excluded));
-    if (p.div) setWantDiv(p.div);
+    appliedDiv.current = false;
+    setWantDiv(p.div ?? null);
     setSplitInitial({
       availableDays: p.availableDays,
       periods: p.div?.length,
       banco: p.banco,
       blocks: p.clt === false ? p.div : undefined,
     });
+  };
+
+  // Apply a shared study from the URL, and load saved recents — both once,
+  // after hydration.
+  useEffect(() => {
+    applyStudy(parseStudy(window.location.search));
+    setRecents(loadRecents());
   }, []);
 
   const policy = followClt ? CLT : PJ;
@@ -145,10 +159,9 @@ export function Optimizer() {
   }, [config, sets, week, policy, from, to, excluded]);
 
   const [schemeIdx, setSchemeIdx] = useState(0);
-  const appliedDiv = useRef(false);
   useEffect(() => {
     if (!schemeData) return;
-    // On first load, select the scheme matching the shared link's `div`.
+    // On each restore (URL or a recent), select the scheme matching its `div`.
     if (!appliedDiv.current && followClt && wantDiv?.length) {
       appliedDiv.current = true;
       const key = [...wantDiv].sort((a, b) => a - b).join(",");
@@ -207,6 +220,7 @@ export function Optimizer() {
       week,
       excluded: [...excluded],
     };
+    setRecents(saveRecent(study));
     const url = `${window.location.origin}${window.location.pathname}?${encodeStudy(study)}`;
     navigator.clipboard
       ?.writeText(url)
@@ -219,6 +233,11 @@ export function Optimizer() {
 
   return (
     <section className={s.wrap}>
+      <RecentStudies
+        recents={recents}
+        onApply={applyStudy}
+        onRemove={(savedAt) => setRecents(removeRecent(savedAt))}
+      />
       <div className={s.controls}>
         <div className={s.field}>
           <span>
@@ -330,6 +349,8 @@ export function Optimizer() {
             periods={periods}
             cal={schemeData.cal}
             names={holidayNames}
+            from={from}
+            to={to}
             onShare={copyLink}
             copied={copied}
           />

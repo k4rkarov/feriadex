@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { partitionsInto } from "@feriadex/core";
 import type { LaborPolicy } from "@feriadex/policies";
 import { t } from "@feriadex/i18n";
@@ -44,11 +44,12 @@ export function SplitEditor({
   const [periods, setPeriods] = useState(3);
   const [blocks, setBlocks] = useState<string[]>(["10", "10", "10"]);
 
-  // Seed once from a shared link (arrives after mount → no hydration mismatch).
-  const seeded = useRef(false);
+  // Seed from a shared link or a saved recent (arrives after mount → no
+  // hydration mismatch). `initial` is a fresh object each time the parent
+  // restores a study, so re-fires correctly on a second/third restore
+  // without re-seeding on unrelated re-renders (stable reference otherwise).
   useEffect(() => {
-    if (seeded.current || !initial) return;
-    seeded.current = true;
+    if (!initial) return;
     const d = initial.availableDays ?? 30;
     setAvailSelect(d === 20 ? "20" : d === 30 ? "30" : "other");
     setAvailText(String(d));

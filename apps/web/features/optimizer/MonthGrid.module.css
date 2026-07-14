@@ -1,0 +1,62 @@
+.months {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.month {
+  min-width: 15rem;
+  flex: 1;
+}
+
+.monthLabel {
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.dow {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+  padding-bottom: 0.15rem;
+}
+
+.empty {
+  aspect-ratio: 1;
+}
+
+.balloon {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  width: max-content;
+  max-width: 60vw;
+  padding: 0.4rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: normal;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .month {
+    min-width: 100%;
+  }
+  .months {
+    justify-content: center;
+  }
+}

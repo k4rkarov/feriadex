@@ -5,11 +5,15 @@
   margin-top: 0.75rem;
 }
 
-/* One font size; content wraps to fit inside the fixed-width card (no scroll). */
+/* One font size; content wraps to fit inside the fixed-width card (no scroll).
+   align-items is flex-start (not flex-end): schemesInline can grow taller
+   when "ver todas" expands it, and top-aligning means it grows downward from
+   a fixed top edge instead of dragging the other fields down with it (they'd
+   otherwise stay bottom-anchored to the now-taller shared flex line). */
 .row {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 0.6rem;
   font-size: 0.8rem;
 }
@@ -38,7 +42,6 @@
 
 .schemesInline {
   flex: 1 1 14rem;
-  align-self: flex-end;
   min-width: 0;
 }
 

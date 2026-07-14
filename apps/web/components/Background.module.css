@@ -11,7 +11,7 @@
   opacity: 0.05;
 }
 
-.sun {
+/*.sun {
   position: fixed;
   top: 4.5rem;
   right: 4.5rem;
@@ -24,7 +24,7 @@
   pointer-events: none;
   opacity: 0.15;
   animation: sunPulse 7s ease-in-out infinite;
-}
+}*/
 
 :global(:root[data-theme="dark"]) .sun {
   display: none;

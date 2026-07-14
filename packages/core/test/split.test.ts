@@ -83,4 +83,25 @@ describe("solveSplit", () => {
       5, 11, 14,
     ]);
   });
+
+  it("beats greedy largest-block-first placement (BACKLOG C5)", () => {
+    // A single Thursday holiday (2024-03-14) creates one clearly-best 4-day
+    // window that overlaps the 1-day block's best pick. The old greedy
+    // solver (largest block first, ranked by efficiency) took the 4-day
+    // block right on the holiday and left the 1-day block a mediocre
+    // leftover slot — total rest 6. The true optimum swaps the 4-day block
+    // to an equally-good weekend-bridge window elsewhere, freeing the
+    // holiday's bridge for the 1-day block — total rest 10.
+    const holidayCal = createCalendar(DEFAULT_WORKING_WEEK, [
+      { date: "2024-03-14", name: "H", level: "national" },
+    ]);
+    const plan = solveSplit(
+      holidayCal,
+      { totalDays: 5, parts: [4, 1] },
+      "2024-03-04",
+      "2024-03-29",
+    );
+    expect(plan.totalRestDays).toBe(10);
+    expect(plan.totalRestDays).toBeGreaterThan(6); // what greedy found here
+  });
 });
