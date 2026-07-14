@@ -36,7 +36,14 @@
 - [x] `done` D6. City list per UF from IBGE + lazy `brCities(uf)` loader. (Redesign R1.1)
 - [x] `done` D7. `countHolidays` + `holidayLists` (4 levels incl. facultativo) with precedence/dedupe for the live counter.
 - [x] `done` D5. Movable feasts via Computus (see B3).
-- [ ] `todo` D8. Enrich capital municipal names where the open dataset is generic.
+- [ ] `todo` D8. Enrich capital municipal names where the open dataset is generic
+      (~79% of entries). Now a direct edit to `src/br/data/{UF}.json`
+      (one flat file per UF, `{month, day, name}`, no year noise) — no code change.
+- [x] `done` D9. Merge `cities/{UF}.json` into `municipal/{UF}.json` (one file,
+      one loader); dedupe holiday rows across years (`{date}` → `{month, day}`,
+      -63% rows); drop movable-feast entries incorrectly stored as fixed dates;
+      deliver as a content-hashed static asset (fetch + manifest, cached
+      forever) instead of a webpack-bundled JS chunk.
 
 ## Epic R — Redesign v1 (P0 now) — see docs/REDESIGN.md
 - [x] `done` R2.1 `describeWindow` core helper (per-day vacation/extra/extra-holiday).

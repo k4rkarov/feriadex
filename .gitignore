@@ -16,6 +16,9 @@ out/
 .turbo/
 *.tsbuildinfo
 
+# Generated static data (copied from packages/holidays/src/data at dev/build time)
+apps/web/public/data/
+
 # Test / coverage
 coverage/
 .nyc_output/

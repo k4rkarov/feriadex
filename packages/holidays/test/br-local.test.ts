@@ -1,9 +1,30 @@
-import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+import type { Holiday } from "@feriadex/core";
 import { brCities } from "../src/br/cities";
 import { brMunicipalHolidays } from "../src/br/municipal";
 import { countHolidays } from "../src/br/counts";
-import { brNationalHolidays } from "../src/br/national";
-import { brStateHolidays } from "../src/br/estadual";
+
+// The loaders fetch a static JSON asset (no manifest/basePath in tests, and
+// no network in unit tests) — stub global fetch to read the same on-disk
+// files the generator writes, so behavior matches production exactly.
+const DATA_DIR = join(import.meta.dirname, "..", "src", "br", "data");
+
+beforeAll(() => {
+  vi.stubGlobal("fetch", async (url: string) => {
+    const name = url.split("/").pop()!;
+    if (name === "manifest.json") {
+      return { ok: false, json: async () => ({}) };
+    }
+    try {
+      const raw = readFileSync(join(DATA_DIR, name), "utf8");
+      return { ok: true, json: async () => JSON.parse(raw) };
+    } catch {
+      return { ok: false, json: async () => ({}) };
+    }
+  });
+});
 
 describe("brCities", () => {
   it("loads the IBGE city list for a UF", async () => {
@@ -31,20 +52,24 @@ describe("brMunicipalHolidays", () => {
 });
 
 describe("countHolidays", () => {
-  it("counts per level with precedence (no double-count)", async () => {
-    const all = brNationalHolidays(2026);
-    const national = all.filter((h) => h.observance !== "optional");
-    const facultative = all.filter((h) => h.observance === "optional");
-    const regional = brStateHolidays("PE", 2026);
-    const municipal = await brMunicipalHolidays("PE", 2611606, 2026, 2026); // Recife
+  it("counts per level with precedence (no double-count)", () => {
+    const national: Holiday[] = [
+      { date: "2026-01-01", name: "Confraternização Universal", level: "national" },
+    ];
+    const regional: Holiday[] = [
+      { date: "2026-07-09", name: "Revolução Constitucionalista", level: "regional" },
+    ];
+    // One date shared with national (must be dropped by precedence), one unique.
+    const municipal: Holiday[] = [
+      { date: "2026-01-01", name: "Feriado Municipal", level: "municipal" },
+      { date: "2026-01-25", name: "Aniversário de São Paulo", level: "municipal" },
+    ];
+    const facultative: Holiday[] = [];
+
     const c = countHolidays(national, regional, municipal, facultative);
-    expect(c.national).toBeGreaterThan(0);
-    expect(c.regional).toBeGreaterThan(0);
-    expect(c.municipal).toBeGreaterThan(0);
-    // A date shared across levels is counted once (municipal excludes nat/reg).
-    const natDates = new Set(national.map((h) => h.date));
-    expect([...new Set(municipal.map((h) => h.date))].some((d) => natDates.has(d)))
-      .toBe(true); // Recife municipal includes e.g. Sexta-feira Santa (national)
-    expect(c.municipal).toBeLessThan(new Set(municipal.map((h) => h.date)).size);
+    expect(c.national).toBe(1);
+    expect(c.regional).toBe(1);
+    // The shared 2026-01-01 is claimed by national -> municipal keeps only its unique date.
+    expect(c.municipal).toBe(1);
   });
 });

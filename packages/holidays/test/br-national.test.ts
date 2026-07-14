@@ -6,10 +6,10 @@ describe("brNationalHolidays", () => {
   const y2026 = brNationalHolidays(2026);
   const byDate = new Map(y2026.map((h) => [h.date, h]));
 
-  it("includes fixed official holidays", () => {
-    expect(byDate.get("2026-01-01")?.name).toBe("Confraternização Universal");
-    expect(byDate.get("2026-04-21")?.name).toBe("Tiradentes");
-    expect(byDate.get("2026-12-25")?.name).toBe("Natal");
+  it("includes fixed official holidays, with their establishing law cited", () => {
+    expect(byDate.get("2026-01-01")?.name).toBe("Confraternização Universal (Lei nº 662/1949)");
+    expect(byDate.get("2026-04-21")?.name).toBe("Tiradentes (Lei nº 10.607/2002)");
+    expect(byDate.get("2026-12-25")?.name).toBe("Natal (Lei nº 662/1949)");
   });
 
   it("computes movable dates for 2026 (known real dates)", () => {

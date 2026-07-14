@@ -49,7 +49,7 @@
 | Dates | **date-fns + date-fns-tz** (Temporal later) | tree-shakeable, TZ-safe; isolated |
 | Validation | **Zod** | one schema → runtime validation + TS types + OpenAPI |
 | i18n | **next-intl** | locale routing, ICU messages |
-| Holiday data | **Static dataset generated at build** (national + state) from BrasilAPI/gov; municipal via user input | no runtime network, no CORS, offline-capable |
+| Holiday data | National/state **computed** at runtime; municipal **pre-generated static JSON**, fetched per UF (content-hashed filename + manifest, cached forever) | no runtime network dependency, no CORS, offline-capable, data decoupled from the JS bundle |
 | Persistence | **URL-encoded state + localStorage** (no backend) | fully front-end MVP; Postgres only if company accounts appear |
 | Deploy | **Static export (SSG) to CDN** (Vercel / Cloudflare / GH Pages) | no server, near-zero cost, global edge |
 
@@ -78,9 +78,12 @@ feriadex/
 │   │   └── test/                # deterministic scenario tests
 │   ├── holidays/                # providers + baked data
 │   │   ├── src/br/              # national (computed), estadual (rule table),
-│   │   │                        #   municipal (baked+curated), cities, counts, states
-│   │   ├── src/data/            # cities/{UF}.json (IBGE), municipal/{UF}.json (the open dataset)
-│   │   └── scripts/             # import-cities-municipal.ts (build-time)
+│   │   │                        #   municipal (fetch-based loader), cities, counts, states
+│   │   │   └── data/            # {UF}.json: {ibge: {name, holidays:[{month,day,name}]}}
+│   │   │                        #   one file per UF, all cities + deduped recurring holidays
+│   │   │                        #   (data lives under src/<cc>/ per country, not a shared src/data/)
+│   │   └── scripts/             # import-cities-municipal.ts (regenerate from IBGE + open dataset)
+│   │                            #   copy-public-data.mjs (hash + copy into apps/web/public, pre-dev/build)
 │   ├── policies/                # labor-policy packs per jurisdiction
 │   │   └── src/
 │   │       ├── policy.ts        # LaborPolicy interface + SplitScheme model

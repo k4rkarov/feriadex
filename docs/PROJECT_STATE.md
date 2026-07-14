@@ -104,7 +104,17 @@ green**. Run tests: `corepack pnpm test`; run app: `corepack pnpm --filter web d
 **Recently done:** share-via-URL (readable params) + hydration-safe restore (E4);
 period-overlap correctness — core `bestAssignment` + conflict-free UI selection,
 honest `Máx. possível` (G-A3); ESLint flat config with no-inline-CSS guard (A2) +
-CI workflow typecheck/lint/test (A3).
+CI workflow typecheck/lint/test (A3); municipal data overhaul (D9) — merged
+`cities/{UF}.json` into `municipal/{UF}.json` (one file per UF, one loader),
+deduped holiday rows across years (-63%), dropped movable-feast entries
+mis-stored as fixed dates, delivery moved from webpack-bundled JS chunks to
+content-hashed static assets (fetch + manifest, cached forever); country-scoped
+data path (`packages/holidays/src/br/data/` — was a shared top-level
+`src/data/`, ready for a future 2nd-country adapter); legal-basis audit of
+every national + state holiday (each now cites its establishing law/
+constitutional provision — see G-H3/G-H5) which caught 4 stale/invalid state
+entries (PE's rule, PB's abolished Jul 26, PI's never-real Jenipapo, RO's
+unconstitutional Evangélico) and fixed them.
 
 (Done: engine + data + compliance + full redesign UI + **deploy (GitHub Pages)**
 + **SEO/OG/sitemap/robots**. See SESSION_SUMMARY.)

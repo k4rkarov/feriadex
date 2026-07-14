@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node ../../packages/holidays/scripts/copy-public-data.mjs",
     "dev": "next dev",
+    "prebuild": "node ../../packages/holidays/scripts/copy-public-data.mjs",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit"

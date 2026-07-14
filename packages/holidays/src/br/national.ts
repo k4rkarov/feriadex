@@ -12,55 +12,85 @@ const fixed = (year: number, month: number, day: number): string =>
  * widely taken off, so they are included as `observance: "optional"` — the app
  * can let the user decide whether optional points count.
  *
- * Note: Consciência Negra (Nov 20) became a national holiday in 2024
- * (Lei 14.759/2023); it is emitted for years >= 2024.
+ * Legal basis (researched 2026-07-13; see docs/KNOWLEDGE_GAPS.md G-H3):
+ * - Confraternização Universal, Dia do Trabalho, Independência do Brasil,
+ *   Proclamação da República, Natal — Lei nº 662, de 6 de abril de 1949
+ *   (art. 1º, original wording).
+ * - Tiradentes, Finados — added to Lei 662/1949's art. 1º by Lei nº 10.607,
+ *   de 19 de dezembro de 2002.
+ * - Nossa Senhora Aparecida — standalone Lei nº 6.802, de 30 de junho de 1980
+ *   (does not amend Lei 662/1949, stands alongside it).
+ * - Dia da Consciência Negra (Nov 20) — standalone Lei nº 14.759, de 21 de
+ *   dezembro de 2023; national only from 2024 onward (emitted for years >= 2024).
+ * - Sexta-feira Santa is NOT declared a national holiday by any federal law.
+ *   Lei nº 9.093, de 12 de setembro de 1995 (art. 2º) instead lets each
+ *   município declare up to 4 "feriados religiosos" by local tradition,
+ *   explicitly naming Sexta-feira da Paixão as one of them — it's observed
+ *   virtually everywhere by municipal adoption, not by a national statute.
+ *   Kept here as `observance: "official"` (matches near-universal practice
+ *   and existing app behavior); the description below reflects the real
+ *   mechanism rather than a fabricated national-law citation.
+ * - Carnaval (seg/ter), Quarta-feira de Cinzas and Corpus Christi have no
+ *   permanent law: for the federal civil service they're set by an annual
+ *   Portaria (Ministério da Gestão e da Inovação em Serviços Públicos), so a
+ *   specific Portaria number would go stale every year — not cited here.
+ *   Corpus Christi is additionally a real municipal holiday in many cities
+ *   under the same Lei 9.093/1995 art. 2º mechanism as Sexta-feira Santa.
  */
 export function brNationalHolidays(year: number): Holiday[] {
   const easter = easterSunday(year);
 
   const official: Holiday[] = [
-    { date: fixed(year, 1, 1), name: "Confraternização Universal" },
-    { date: addDays(easter, -2), name: "Sexta-feira Santa" },
-    { date: fixed(year, 4, 21), name: "Tiradentes" },
-    { date: fixed(year, 5, 1), name: "Dia do Trabalho" },
-    { date: fixed(year, 9, 7), name: "Independência do Brasil" },
-    { date: fixed(year, 10, 12), name: "Nossa Senhora Aparecida" },
-    { date: fixed(year, 11, 2), name: "Finados" },
-    { date: fixed(year, 11, 15), name: "Proclamação da República" },
-    { date: fixed(year, 12, 25), name: "Natal" },
+    { date: fixed(year, 1, 1), name: "Confraternização Universal (Lei nº 662/1949)" },
+    {
+      date: addDays(easter, -2),
+      name: "Sexta-feira Santa",
+      description:
+        "Feriado religioso observado por adesão municipal (Lei nº 9.093/1995, art. 2º) — não há lei federal que o declare feriado nacional diretamente",
+    },
+    { date: fixed(year, 4, 21), name: "Tiradentes (Lei nº 10.607/2002)" },
+    { date: fixed(year, 5, 1), name: "Dia do Trabalho (Lei nº 662/1949)" },
+    { date: fixed(year, 9, 7), name: "Independência do Brasil (Lei nº 662/1949)" },
+    { date: fixed(year, 10, 12), name: "Nossa Senhora Aparecida (Lei nº 6.802/1980)" },
+    { date: fixed(year, 11, 2), name: "Finados (Lei nº 10.607/2002)" },
+    { date: fixed(year, 11, 15), name: "Proclamação da República (Lei nº 662/1949)" },
+    { date: fixed(year, 12, 25), name: "Natal (Lei nº 662/1949)" },
   ].map((h): Holiday => ({ ...h, level: "national", observance: "official" }));
 
   if (year >= 2024) {
     official.push({
       date: fixed(year, 11, 20),
-      name: "Dia da Consciência Negra",
+      name: "Dia da Consciência Negra (Lei nº 14.759/2023)",
       level: "national",
       observance: "official",
     });
   }
 
   // Federal optional points (pontos facultativos): not national holidays, but
-  // commonly days off — the user decides via the checkbox.
+  // commonly days off — the user decides via the checkbox. No permanent law —
+  // set annually by Portaria (MGI) for the federal civil service; see the
+  // legal-basis note above.
   const optional: Holiday[] = [
     {
       date: addDays(easter, -48),
-      name: "Carnaval (segunda)",
-      description: "Ponto facultativo (véspera de Carnaval)",
+      name: "Véspera de Carnaval (segunda)",
+      description: "Definido anualmente por Portaria do Governo Federal, sem lei fixa",
     },
     {
       date: addDays(easter, -47),
       name: "Carnaval (terça)",
-      description: "Ponto facultativo nacional",
+      description: "Definido anualmente por Portaria do Governo Federal, sem lei fixa",
     },
     {
       date: addDays(easter, -46),
-      name: "Quarta-feira de Cinzas",
-      description: "Ponto facultativo até as 14h",
+      name: "Quarta-feira de Cinzas (até as 14h)",
+      description: "Definido anualmente por Portaria do Governo Federal, sem lei fixa",
     },
     {
       date: addDays(easter, 60),
       name: "Corpus Christi",
-      description: "Ponto facultativo federal; feriado por lei em vários municípios",
+      description:
+        "Definido anualmente por Portaria do Governo Federal, sem lei fixa; feriado por lei em vários municípios (Lei nº 9.093/1995, art. 2º)",
     },
   ].map((h): Holiday => ({ ...h, level: "national", observance: "optional" }));
 

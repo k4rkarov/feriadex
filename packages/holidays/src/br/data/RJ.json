@@ -1,0 +1,1516 @@
+{
+    "3300100": {
+        "name": "Angra dos Reis",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 6,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3300159": {
+        "name": "Aperibé",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 20,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3300209": {
+        "name": "Araruama",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 20,
+                "name": "Padroeiro"
+            },
+            {
+                "month": 2,
+                "day": 6,
+                "name": "Emancipação"
+            }
+        ]
+    },
+    "3300225": {
+        "name": "Areal",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 10,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 15,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3300233": {
+        "name": "Armação dos Búzios",
+        "holidays": [
+            {
+                "month": 7,
+                "day": 26,
+                "name": "N. Sra de Sant´Anna"
+            },
+            {
+                "month": 11,
+                "day": 12,
+                "name": "Aniversário da cidade"
+            }
+        ]
+    },
+    "3300258": {
+        "name": "Arraial do Cabo",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 5,
+                "day": 13,
+                "name": "Aniversário"
+            },
+            {
+                "month": 10,
+                "day": 23,
+                "name": "Ação de Graças"
+            }
+        ]
+    },
+    "3300308": {
+        "name": "Barra do Piraí",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 10,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 7,
+                "day": 26,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3300407": {
+        "name": "Barra Mansa",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 20,
+                "name": "Dia de São Sebastião, padroeiro da cidade"
+            },
+            {
+                "month": 10,
+                "day": 3,
+                "name": "Aniversário da cidade"
+            }
+        ]
+    },
+    "3300456": {
+        "name": "Belford Roxo",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 3,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 20,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Padroeira"
+            }
+        ]
+    },
+    "3300506": {
+        "name": "Bom Jardim",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 5,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3300605": {
+        "name": "Bom Jesus do Itabapoana",
+        "holidays": [
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3300704": {
+        "name": "Cabo Frio",
+        "holidays": [
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Nossa Senhora da Assunção (Padroeira)"
+            },
+            {
+                "month": 11,
+                "day": 13,
+                "name": "Fundação de Cabo Frio (Aniversário)"
+            }
+        ]
+    },
+    "3300803": {
+        "name": "Cachoeiras de Macacu",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 5,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3300902": {
+        "name": "Cambuci",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 24,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 11,
+                "day": 5,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3300936": {
+        "name": "Carapebus",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 13,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3300951": {
+        "name": "Comendador Levy Gasparian",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 30,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301009": {
+        "name": "Campos dos Goytacazes",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 15,
+                "name": "Santo Amaro"
+            },
+            {
+                "month": 3,
+                "day": 28,
+                "name": "Fundação de Campos"
+            },
+            {
+                "month": 8,
+                "day": 6,
+                "name": "Santíssimo Salvador"
+            }
+        ]
+    },
+    "3301108": {
+        "name": "Cantagalo",
+        "holidays": [
+            {
+                "month": 5,
+                "day": 22,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 29,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301157": {
+        "name": "Cardoso Moreira",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 19,
+                "name": "São José"
+            },
+            {
+                "month": 11,
+                "day": 30,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301207": {
+        "name": "Carmo",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 7,
+                "day": 16,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301306": {
+        "name": "Casimiro de Abreu",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 24,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 15,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301405": {
+        "name": "Conceição de Macabu",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301504": {
+        "name": "Cordeiro",
+        "holidays": [
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 31,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301603": {
+        "name": "Duas Barras",
+        "holidays": [
+            {
+                "month": 5,
+                "day": 8,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 8,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301702": {
+        "name": "Duque de Caxias",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            },
+            {
+                "month": 8,
+                "day": 25,
+                "name": "Dia de Duque de Caxias"
+            }
+        ]
+    },
+    "3301801": {
+        "name": "Engenheiro Paulo de Frontin",
+        "holidays": []
+    },
+    "3301850": {
+        "name": "Guapimirim",
+        "holidays": [
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 11,
+                "day": 25,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 11,
+                "day": 26,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301876": {
+        "name": "Iguaba Grande",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 8,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3301900": {
+        "name": "Itaboraí",
+        "holidays": [
+            {
+                "month": 5,
+                "day": 22,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 24,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302007": {
+        "name": "Itaguaí",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 2,
+                "name": "Dia de Adoração de Cristo"
+            },
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 7,
+                "day": 5,
+                "name": "Aniversário da cidade"
+            },
+            {
+                "month": 12,
+                "day": 3,
+                "name": "Dia de São Francisco Xavier, Padroeiro do Município"
+            }
+        ]
+    },
+    "3302056": {
+        "name": "Italva",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 12,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302106": {
+        "name": "Itaocara",
+        "holidays": [
+            {
+                "month": 2,
+                "day": 4,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302205": {
+        "name": "Itaperuna",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 19,
+                "name": "São José"
+            },
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 5,
+                "day": 10,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302254": {
+        "name": "Itatiaia",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 19,
+                "name": "São José"
+            },
+            {
+                "month": 6,
+                "day": 1,
+                "name": "Aniversário da Cidade"
+            }
+        ]
+    },
+    "3302270": {
+        "name": "Japeri",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 30,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302304": {
+        "name": "Laje do Muriaé",
+        "holidays": [
+            {
+                "month": 9,
+                "day": 14,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 15,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302403": {
+        "name": "Macaé",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 24,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 7,
+                "day": 29,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302452": {
+        "name": "Macuco",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 24,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 28,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302502": {
+        "name": "Magé",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 9,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 10,
+                "day": 28,
+                "name": "Homenagem a Mané Garrincha"
+            }
+        ]
+    },
+    "3302601": {
+        "name": "Mangaratiba",
+        "holidays": [
+            {
+                "month": 9,
+                "day": 8,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 11,
+                "day": 11,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302700": {
+        "name": "Maricá",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 5,
+                "day": 26,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302809": {
+        "name": "Mendes",
+        "holidays": [
+            {
+                "month": 7,
+                "day": 11,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 14,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302858": {
+        "name": "Mesquita",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 25,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 11,
+                "day": 27,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3302908": {
+        "name": "Miguel Pereira",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            },
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3303005": {
+        "name": "Miracema",
+        "holidays": [
+            {
+                "month": 5,
+                "day": 3,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            }
+        ]
+    },
+    "3303104": {
+        "name": "Natividade",
+        "holidays": [
+            {
+                "month": 9,
+                "day": 6,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 8,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3303203": {
+        "name": "Nilópolis",
+        "holidays": [
+            {
+                "month": 8,
+                "day": 21,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3303302": {
+        "name": "Niterói",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 24,
+                "name": "Dia de São João (Padroeiro da Cidade)"
+            },
+            {
+                "month": 11,
+                "day": 22,
+                "name": "Aniversário de Niterói"
+            }
+        ]
+    },
+    "3303401": {
+        "name": "Nova Friburgo",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 5,
+                "day": 16,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 5,
+                "day": 18,
+                "name": "Fundação de Nova Friburgo"
+            },
+            {
+                "month": 6,
+                "day": 24,
+                "name": "São João (Padroeiro)"
+            }
+        ]
+    },
+    "3303500": {
+        "name": "Nova Iguaçu",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 15,
+                "name": "Aniversário da Cidade"
+            },
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Dia de São Jorge"
+            },
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            }
+        ]
+    },
+    "3303609": {
+        "name": "Paracambi",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 29,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 8,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3303708": {
+        "name": "Paraíba do Sul",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 29,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3303807": {
+        "name": "Paraty",
+        "holidays": [
+            {
+                "month": 2,
+                "day": 28,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3303856": {
+        "name": "Paty do Alferes",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3303906": {
+        "name": "Petrópolis",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 16,
+                "name": "Fundação de Petrópolis"
+            },
+            {
+                "month": 6,
+                "day": 29,
+                "name": "Chegada dos Colonos Alemães"
+            },
+            {
+                "month": 10,
+                "day": 19,
+                "name": "São Pedro de Alcântara (Padroeiro)"
+            }
+        ]
+    },
+    "3303955": {
+        "name": "Pinheiral",
+        "holidays": [
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304003": {
+        "name": "Piraí",
+        "holidays": [
+            {
+                "month": 7,
+                "day": 26,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 10,
+                "day": 17,
+                "name": "Aniversário da Cidade"
+            }
+        ]
+    },
+    "3304102": {
+        "name": "Porciúncula",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 20,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            },
+            {
+                "month": 8,
+                "day": 11,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304110": {
+        "name": "Porto Real",
+        "holidays": [
+            {
+                "month": 9,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 11,
+                "day": 5,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304128": {
+        "name": "Quatis",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 11,
+                "day": 25,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304144": {
+        "name": "Queimados",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304151": {
+        "name": "Quissamã",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 4,
+                "name": "Emancipação de Quissamã"
+            },
+            {
+                "month": 2,
+                "day": 17,
+                "name": "N. Sra. do Desterro (Padroeira)"
+            },
+            {
+                "month": 6,
+                "day": 12,
+                "name": "Dia do Plebiscito de 1988 (separação de Macaé)"
+            }
+        ]
+    },
+    "3304201": {
+        "name": "Resende",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 29,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304300": {
+        "name": "Rio Bonito",
+        "holidays": [
+            {
+                "month": 5,
+                "day": 7,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304409": {
+        "name": "Rio Claro",
+        "holidays": [
+            {
+                "month": 9,
+                "day": 15,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304508": {
+        "name": "Rio das Flores",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 17,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304524": {
+        "name": "Rio das Ostras",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 10,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304557": {
+        "name": "Rio de Janeiro",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 20,
+                "name": "Dia de São Sebastião, Padroeiro da cidade (Lei nº 1.271/1988)"
+            }
+        ]
+    },
+    "3304607": {
+        "name": "Santa Maria Madalena",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 8,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            },
+            {
+                "month": 6,
+                "day": 29,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304706": {
+        "name": "Santo Antônio de Pádua",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304755": {
+        "name": "São Francisco de Itabapoana",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 18,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 4,
+                "day": 2,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 11,
+                "day": 30,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304805": {
+        "name": "São Fidélis",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 24,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 8,
+                "day": 6,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3304904": {
+        "name": "São Gonçalo",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 10,
+                "name": "São Gonçalo"
+            },
+            {
+                "month": 9,
+                "day": 22,
+                "name": "Aniversário da Cidade"
+            }
+        ]
+    },
+    "3305000": {
+        "name": "São João da Barra",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 17,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 24,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305109": {
+        "name": "São João de Meriti",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 24,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 8,
+                "day": 21,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305133": {
+        "name": "São José de Ubá",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 19,
+                "name": "São José"
+            },
+            {
+                "month": 12,
+                "day": 28,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305158": {
+        "name": "São José do Vale do Rio Preto",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 19,
+                "name": "São José"
+            },
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 15,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305208": {
+        "name": "São Pedro da Aldeia",
+        "holidays": [
+            {
+                "month": 5,
+                "day": 16,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 29,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305307": {
+        "name": "São Sebastião do Alto",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 20,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 3,
+                "day": 25,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 13,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305406": {
+        "name": "Sapucaia",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            },
+            {
+                "month": 12,
+                "day": 7,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305505": {
+        "name": "Saquarema",
+        "holidays": [
+            {
+                "month": 5,
+                "day": 8,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            },
+            {
+                "month": 9,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305554": {
+        "name": "Seropédica",
+        "holidays": [
+            {
+                "month": 3,
+                "day": 13,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 4,
+                "day": 2,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305604": {
+        "name": "Silva Jardim",
+        "holidays": [
+            {
+                "month": 5,
+                "day": 8,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305703": {
+        "name": "Sumidouro",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 10,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305752": {
+        "name": "Tanguá",
+        "holidays": [
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 28,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3305802": {
+        "name": "Teresópolis",
+        "holidays": [
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Dia de Santo Antônio"
+            },
+            {
+                "month": 7,
+                "day": 6,
+                "name": "Aniversário de Teresópolis"
+            },
+            {
+                "month": 10,
+                "day": 15,
+                "name": "Santa Teresa"
+            }
+        ]
+    },
+    "3305901": {
+        "name": "Trajano de Moraes",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 25,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3306008": {
+        "name": "Três Rios",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 20,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3306107": {
+        "name": "Valença",
+        "holidays": [
+            {
+                "month": 8,
+                "day": 15,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3306156": {
+        "name": "Varre-Sai",
+        "holidays": [
+            {
+                "month": 1,
+                "day": 20,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 11,
+                "day": 25,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3306206": {
+        "name": "Vassouras",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 9,
+                "day": 29,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 12,
+                "day": 8,
+                "name": "Feriado Municipal"
+            }
+        ]
+    },
+    "3306305": {
+        "name": "Volta Redonda",
+        "holidays": [
+            {
+                "month": 4,
+                "day": 23,
+                "name": "Feriado Municipal"
+            },
+            {
+                "month": 6,
+                "day": 13,
+                "name": "Santo Antônio"
+            },
+            {
+                "month": 7,
+                "day": 17,
+                "name": "Feriado Municipal"
+            }
+        ]
+    }
+}

@@ -23,6 +23,7 @@ import {
   type SplitConfig,
 } from "./model";
 import { encodeStudy, parseStudy, type Study } from "../../lib/share";
+import { asset } from "../../lib/asset";
 import { InfoTip } from "../../components/InfoTip";
 import { Toggle } from "../../components/Toggle";
 import { SearchSelect } from "../../components/SearchSelect";
@@ -74,7 +75,7 @@ export function Optimizer() {
   // the city is reset in the state selector's onChange, not here).
   useEffect(() => {
     let live = true;
-    brCities(uf).then((c) => {
+    brCities(uf, asset("/data/holidays")).then((c) => {
       if (live) setCities(c);
     });
     return () => {

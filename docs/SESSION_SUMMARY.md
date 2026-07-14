@@ -439,3 +439,97 @@ project's documentation baseline.
 - **A3 CI.** `.github/workflows/ci.yml` — typecheck + lint + test on PR/push.
 - **Share button** moved next to the "Dias extras" badge (icon-only) + shared-URL
   hydration fix (apply URL params after mount).
+
+## Session — 2026-07-13 — municipal data overhaul (D9)
+- **Merged `cities/{UF}.json` into `municipal/{UF}.json`.** One file per UF
+  now: `{ibge: {name, holidays: [{month, day, name}]}}`, covering all 5,571
+  municipalities (not just the 3,846 with holiday data). `cities/` directory
+  deleted; `brCities`/`brMunicipalHolidays` both read the same file via a new
+  shared loader (`src/br/data-loader.ts`).
+- **Dropped the year from holiday rows.** Old format repeated every entry
+  once per fetched year (2024/2025/2026); new format stores `{month, day,
+  name}` and expands to ISO dates on demand for whatever range the app
+  requests. Checked all 27 UF files for city+month/day combos with
+  conflicting names before collapsing — found exactly 3 (all in `SC.json`,
+  all generic-vs-specific) — so the dedup rule (prefer the non-generic name)
+  is safe. Net: 25,219 raw rows → 9,299 unique, -63%; combined dataset
+  760 KB → 712 KB before the next fix below (vs. 1.57 MB old cities+municipal).
+- **Bug caught during the rewrite:** `r.data.split("/")` (format `DD/MM/YYYY`)
+  was destructured wrong, assigning the *year* into the `day` field. Fixed
+  before any data shipped.
+- **Correctness fix:** ~9.4% of the deduped rows were movable feasts (Sexta-
+  feira Santa, Corpus Christi, Carnaval, Quarta de Cinzas) that some cities
+  list as "municipal" — storing those as a fixed `{month, day}` would produce
+  wrong dates in any year outside 2024–2026 (they shift with Easter). Dropped
+  at generation time; they're already computed precisely at the national/
+  facultative level via `@feriadex/core`'s Computus.
+- **`CURATED` override map deleted** from `src/br/municipal.ts` — its ~7
+  cities' entries are now folded into the generator script (survive a full
+  regen) and live as plain rows in the regenerated JSON, same shape as
+  everything else.
+- **Delivery: webpack `import()` → `fetch()` of a static asset.** New
+  `packages/holidays/scripts/copy-public-data.mjs` copies
+  `src/data/municipal/*.json` into `apps/web/public/data/holidays/` as
+  content-hashed files (`{UF}.{hash8}.json`) + a `manifest.json`, wired as
+  `predev`/`prebuild` in `apps/web/package.json` (pnpm's npm-lifecycle
+  pre-scripts — confirmed it fires automatically before `next dev`/`build`,
+  including in the deploy workflow). Restores the "cache forever" property a
+  webpack chunk gets for free, without needing GitHub Pages cache-control
+  config. Confirmed via build output: no holiday data left in any `_next` JS
+  chunk; it's all in `out/data/holidays/*.json` instead.
+- Kept per-UF granularity (not per-município) and per-UF-not-per-city
+  fetches: switching city within an already-loaded state still costs zero
+  network requests.
+
+## Session — 2026-07-13/14 — data path reorg + legal-basis audit
+- **Data path reorg** (user-driven): moved municipal data from a shared
+  top-level `src/data/municipal/` to `src/br/data/` — country-scoped, so a
+  future `src/us/data/` (etc.) sits alongside without a shared dumping ground.
+  Fixed all references: `import-cities-municipal.ts`'s `OUT`, `copy-public-
+  data.mjs`'s `SRC`, `br-local.test.ts`'s `DATA_DIR`. No app-facing change —
+  the public-serving path (`/data/holidays/...`) is unrelated to where the
+  package keeps its own source.
+- **Legal-basis research for every national + state holiday.** Delegated to
+  4 parallel research agents (national; and 3 state groups) with explicit
+  "verify via search, don't fabricate a law number" instructions. Findings
+  applied to `national.ts`/`estadual.ts`: each holiday's `name` now carries
+  its establishing law, e.g. `"Tiradentes (Lei nº 10.607/2002)"`, matching
+  the citation style already used for a couple of curated municipal entries.
+  Notable non-obvious findings:
+  - Brazil has **no single law listing all national holidays** — Lei nº
+    662/1949 is the core list (amended by Lei nº 10.607/2002 for Tiradentes/
+    Finados); Nossa Senhora Aparecida (Lei 6.802/1980) and Consciência Negra
+    (Lei 14.759/2023) are separate standalone laws.
+  - **Sexta-feira Santa isn't a national holiday by law at all** — it's a
+    municipal "feriado religioso" under Lei nº 9.093/1995 art. 2º, adopted
+    almost everywhere by local tradition. Kept as official (matches practice)
+    but the citation was replaced with an accurate description instead of a
+    fabricated national-law reference.
+  - **Carnaval/Cinzas/Corpus Christi have no permanent law** — federal civil
+    service sets them via an annual Portaria (MGI) that changes number every
+    year; deliberately not hardcoded (would go stale).
+  - **4 state-table entries were factually wrong, not just uncited** — found
+    during the audit, not something the original owner-provided list flagged:
+    - PE: modeled as "first Sunday of March"; that law was revoked in 2017 —
+      current law fixes Data Magna on a plain **March 6**. Changed the data
+      and deleted the now-unused movable-rule mechanism from `estadual.ts`.
+    - PB: "Memória de João Pessoa" (Jul 26) was abolished in 2015/2016,
+      replaced by "Fundação do Estado e N. Sra. das Neves" (Aug 5). Removed.
+    - PI: "Batalha do Jenipapo" (Mar 13) was **never** an actual holiday
+      (federal law caps 1 civil holiday/state; Piauí's is Oct 19) — removed.
+    - RO: "Dia do Evangélico" (Jun 18) was declared **unconstitutional** by
+      the STF in 2020 (ADI 3940) — removed.
+  - A few citations (BA, CE, MG, SE, AP, RR) turned out to be **state
+    constitution articles**, not ordinary laws — cited as "Constituição
+    Estadual, art. X" rather than forced into a "Lei nº" format.
+  - Two entries (AL's São João/São Pedro) legally bind only the public sector
+    per Justiça do Trabalho rulings, not commerce/private employers — kept
+    as official (matches existing data model) with that caveat as a
+    `description`.
+  - Confidence varies per entry (some only confirmed via consistent secondary
+    sources, not a directly-fetched primary gazette text) — full sourcing
+    notes are in the research, condensed guidance now lives in
+    `docs/KNOWLEDGE_GAPS.md` G-H3/G-H5.
+- Updated `br-national.test.ts`/`br-estadual.test.ts` for the new names/dates;
+  added a test asserting the 3 removed entries (PB/PI/RO) no longer emit.
+  70 tests green, typecheck/lint/build clean.

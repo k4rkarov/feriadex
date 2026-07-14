@@ -12,6 +12,7 @@ import {
   brNationalHolidays,
   brStateHolidays,
 } from "@feriadex/holidays";
+import { asset } from "../../lib/asset";
 
 /** Mon–Fri default working week (index 0 = Sunday). */
 export const DEFAULT_WEEK: WorkingWeek = [
@@ -136,7 +137,9 @@ export async function loadHolidays(
     regional.push(...brStateHolidays(uf, y));
   }
   const municipal =
-    cityIbge != null ? await brMunicipalHolidays(uf, cityIbge, fy, ty) : [];
+    cityIbge != null
+      ? await brMunicipalHolidays(uf, cityIbge, fy, ty, asset("/data/holidays"))
+      : [];
   // Count/consider only occurrences within the actual [from, to] window
   // (ISO strings compare lexicographically), so a 12-month span crossing two
   // calendar years isn't double-counted.
